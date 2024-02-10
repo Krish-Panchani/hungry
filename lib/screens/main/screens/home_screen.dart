@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void loadUserLocations() {
     // Fetch users' locations from Firestore
-    FirebaseFirestore.instance.collection('users').get().then((snapshot) {
+    FirebaseFirestore.instance.collection('location').get().then((snapshot) {
       for (var doc in snapshot.docs) {
         var data = doc.data();
         // Parse the location string into latitude and longitude
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
           position: LatLng(latitude, longitude),
           infoWindow: InfoWindow(
             title:
-                '${data['Fname']} ${data['Lname']}', // Example: Combine first name and last name for the title
+                '${data['Fname']}', // Example: Combine first name and last name for the title
             snippet: data['address'], // Show address as snippet
           ),
           icon: _markerIcon,
