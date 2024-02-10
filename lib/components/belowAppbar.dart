@@ -1,10 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+
 import 'package:hunger/constants.dart';
 
 class AddressBox extends StatefulWidget {
-  const AddressBox({Key? key}) : super(key: key);
+  final String initialAddress;
+  const AddressBox({
+    Key? key,
+    required this.initialAddress,
+  }) : super(key: key);
 
   @override
   State<AddressBox> createState() => _AddressBoxState();
@@ -20,6 +26,8 @@ class _AddressBoxState extends State<AddressBox> {
   void initState() {
     super.initState();
     _getLocationPermission();
+    _getCurrentLocation();
+    _currentAddress = widget.initialAddress;
   }
 
   Future<void> _getLocationPermission() async {
@@ -73,6 +81,7 @@ class _AddressBoxState extends State<AddressBox> {
       }
 
       setState(() {
+        _currentPosition = position;
         _currentAddress = _currentAddress;
         _isLoading = false;
       });
@@ -104,12 +113,11 @@ class _AddressBoxState extends State<AddressBox> {
                         const CircularProgressIndicator(
                           color: kSecondaryColor,
                         )
-                      else if (_currentPosition != null &&
-                          _currentAddress != null)
+                      else if (_currentPosition != null)
                         Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            '$_currentAddress',
+                            _currentAddress!,
                             style: const TextStyle(
                               fontSize: 15,
                               color: Colors.black,

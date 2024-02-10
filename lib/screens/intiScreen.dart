@@ -13,8 +13,29 @@ import 'package:hunger/screens/addFood/addFoodDetails.dart';
 import 'package:hunger/screens/main/screens/home_screen.dart';
 import 'package:hunger/screens/sign_in/sign_in_screen.dart';
 
-class InitScreen extends StatelessWidget {
+class InitScreen extends StatefulWidget {
   const InitScreen({Key? key}) : super(key: key);
+
+  @override
+  State<InitScreen> createState() => _InitScreenState();
+}
+
+class _InitScreenState extends State<InitScreen> {
+  late String _currentAddress;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentAddress(); // Fetch current address
+  }
+
+  Future<void> _getCurrentAddress() async {
+    // Fetch current address here
+    // For example, you can use Geocoding or any other method to get the address
+    // For now, let's assume _currentAddress is fetched successfully
+    _currentAddress = "123 Main St, City, Country"; // Example address
+    setState(() {}); // Update the UI
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +46,9 @@ class InitScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const AddressBox(),
+          AddressBox(
+            initialAddress: _currentAddress,
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -41,7 +64,8 @@ class InitScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) => const HomeScreen(),
+                          builder: (context) =>
+                              HomeScreen(currentAddress: _currentAddress),
                         ),
                       );
                     },
@@ -124,7 +148,7 @@ class InitScreen extends StatelessWidget {
                     child: const Text(
                       'Submit Remaining Food',
                       style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 16),

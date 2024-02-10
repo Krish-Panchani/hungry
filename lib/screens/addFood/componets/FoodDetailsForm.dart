@@ -88,7 +88,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
           TextFormField(
             controller: PhoneController,
             keyboardType: TextInputType.phone,
@@ -120,7 +120,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
           TextFormField(
             controller: addressController,
             onSaved: (newValue) => address = newValue,
@@ -151,7 +151,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
           TextFormField(
             controller: detialsController,
             onSaved: (newValue) => address = newValue,
@@ -171,11 +171,13 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
             decoration: InputDecoration(
               labelText: "Details",
               hintText: "Enter your details",
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 35.0, horizontal: 12.0),
               // If  you are using latest version of flutter then lable text and hint text shown like this
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: const CustomSurffixIcon(
-                  svgIcon: "assets/icons/Location point.svg"),
+                  svgIcon: "assets/icons/Chat bubble Icon.svg"),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: const BorderSide(color: kTextColor),
@@ -183,13 +185,16 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
             ),
           ),
           FormError(errors: errors),
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: kPrimaryColor,
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12), // <-- Radius
+                side: const BorderSide(color: kPrimaryColor, width: 2),
               ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
             ),
             onPressed: () async {
               // _openMapToSelectLocation();
@@ -217,9 +222,11 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
               }
             },
             child: const Text(
-              "Select Location",
+              "Select Location of Food Bank",
               style: TextStyle(
-                color: kTextColor,
+                color: kPrimaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
             ),
           ),

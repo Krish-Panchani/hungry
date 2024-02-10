@@ -22,18 +22,21 @@ class _AddFoodDetailsState extends State<AddFoodDetails> {
           child: Column(
             children: [
               Text(
-                "Enter Details",
+                "Submit Remaining Food",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(
+                height: 16,
+              ),
               Text(
-                "If you Have ramainig food..?  \nThen fill this form and submit the details",
+                "Your small help let our App one step close to\nkill hungers",
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 30),
               AddFoodDetailsForm(),
             ],
           ),

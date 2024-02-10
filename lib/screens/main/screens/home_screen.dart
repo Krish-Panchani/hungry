@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:ui';
 
@@ -6,19 +7,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/belowAppbar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/screens/main/screens/componets/bottomSlideBar.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String? currentAddress;
+  const HomeScreen({
+    Key? key,
+    this.currentAddress,
+  }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late String _currentAddress;
+
   final Completer<GoogleMapController> _controller = Completer();
 
   static const LatLng _center = LatLng(23.044857, 72.6459813);
@@ -35,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _loadMarkerIcon();
     loadUserLocations();
+    _currentAddress = widget.currentAddress ?? 'Loading...';
   }
 
   void _loadMarkerIcon() async {
@@ -228,7 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //     ],
           //   ),
           // ),
-          const AddressBox(),
+          AddressBox(initialAddress: _currentAddress),
           const BottomSlider(),
         ],
       ),
