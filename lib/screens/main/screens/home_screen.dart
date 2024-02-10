@@ -158,7 +158,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
-      drawer: const MyDrawer(),
+      drawer: const MyDrawer(
+        showLogOut: false,
+      ),
       body: Stack(
         children: <Widget>[
           Positioned.fill(

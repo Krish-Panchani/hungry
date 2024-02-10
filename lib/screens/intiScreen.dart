@@ -42,7 +42,9 @@ class _InitScreenState extends State<InitScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(),
-      drawer: const MyDrawer(),
+      drawer: const MyDrawer(
+        showLogOut: true,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -48,7 +48,9 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
-      drawer: const MyDrawer(),
+      drawer: const MyDrawer(
+        showLogOut: true,
+      ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,

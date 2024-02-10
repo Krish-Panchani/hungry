@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/intiScreen.dart';
 
-class MyDrawer extends StatefulWidget {
-  const MyDrawer({super.key});
+class MyDrawer extends StatelessWidget {
+  final bool showLogOut;
 
-  @override
-  State<MyDrawer> createState() => _MyDrawerState();
-}
+  const MyDrawer({Key? key, required this.showLogOut}) : super(key: key);
 
-class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -62,21 +59,22 @@ class _MyDrawerState extends State<MyDrawer> {
               // );
             },
           ),
-          ListTile(
-            title: const Text('LogOut'),
-            onTap: () {
-              // Sign out the user
-              FirebaseAuth.instance.signOut();
+          if (showLogOut) // Conditionally show the LogOut list tile
+            ListTile(
+              title: const Text('LogOut'),
+              onTap: () {
+                // Sign out the user
+                FirebaseAuth.instance.signOut();
 
-              // Navigate to InitScreen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const InitScreen(),
-                ),
-              );
-            },
-          ),
+                // Navigate to InitScreen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const InitScreen(),
+                  ),
+                );
+              },
+            ),
         ],
       ),
     );

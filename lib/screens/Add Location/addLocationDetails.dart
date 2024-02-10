@@ -15,7 +15,9 @@ class _AddLocationDetailsState extends State<AddLocationDetails> {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: MyAppBar(),
-      drawer: MyDrawer(),
+      drawer: MyDrawer(
+        showLogOut: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(25.0),
