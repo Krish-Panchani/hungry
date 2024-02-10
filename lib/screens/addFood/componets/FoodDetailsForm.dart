@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/screens/addFood/FoodDetailsScreen.dart';
 import 'package:hunger/screens/addFood/addFoodDetails.dart';
 import 'package:hunger/screens/addFood/mapScreen.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
@@ -268,7 +269,10 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
 
+      String id = const Uuid().v4();
+
       Map<String, dynamic> userData = {
+        "id": id,
         "Fname": Fname,
         "phone": phone,
         "address": address,

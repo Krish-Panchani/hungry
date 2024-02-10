@@ -9,6 +9,7 @@ import 'package:hunger/screens/Add%20Location/LocationDetails.dart';
 import 'package:hunger/screens/Add%20Location/addLocationDetails.dart';
 import 'package:hunger/screens/Add%20Location/mapScreen2.dart';
 import 'package:hunger/screens/addFood/mapScreen.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
@@ -261,8 +262,10 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
       String details = detialsController.text.trim();
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
+      String id = const Uuid().v4();
 
       Map<String, dynamic> userData = {
+        "id": id,
         "Fname": Fname,
         "phone": phone,
         "address": address,
