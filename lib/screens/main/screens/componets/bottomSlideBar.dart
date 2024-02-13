@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/models/UserModal.dart';
+import 'package:hunger/screens/main/screens/SeeAllScreen.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:math' show cos, sqrt, asin;
 import 'package:geolocator/geolocator.dart';
@@ -148,17 +150,27 @@ class _BottomSliderState extends State<BottomSlider> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Icon(Icons.drag_handle, color: Colors.black, size: 24.0),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: Text(
-                  'See All',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: kPrimaryColor,
+                padding: const EdgeInsets.only(right: 10),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const SeeAllScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'See All',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: kPrimaryColor,
+                    ),
                   ),
                 ),
               ),
