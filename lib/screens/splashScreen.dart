@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/intiScreen.dart';
 
@@ -30,14 +31,18 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         width: double.infinity,
         color: kPrimaryColor,
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image(
-              image: AssetImage('assets/images/splash.png'),
+            SvgPicture.asset(
+              'assets/icons/splash.svg',
+              width: 200, // Adjust the width as needed
             ),
-            Text(
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
               'Meals For Everyone...',
               style: TextStyle(
                 fontSize: 20,

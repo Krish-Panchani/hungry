@@ -1,11 +1,15 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
 import '../screens/sign_up/sign_up_screen.dart';
 
 class NoAccountText extends StatelessWidget {
+  final String buttonPressed;
+
   const NoAccountText({
     Key? key,
+    required this.buttonPressed,
   }) : super(key: key);
 
   @override
@@ -22,7 +26,9 @@ class NoAccountText extends StatelessWidget {
             Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => SignUpScreen(),
+                builder: (context) => SignUpScreen(
+                  buttonPressed: buttonPressed,
+                ),
               ),
             );
           },

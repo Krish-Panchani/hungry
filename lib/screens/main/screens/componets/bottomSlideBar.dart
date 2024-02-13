@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:hunger/constants.dart';
+import 'package:hunger/models/UserModal.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:math' show cos, sqrt, asin;
 import 'package:geolocator/geolocator.dart';
@@ -30,10 +32,16 @@ class _BottomSliderState extends State<BottomSlider> {
   double? userLat;
   double? userLon;
 
+  late DatabaseReference _databaseRef;
+
+  StreamSubscription<dynamic>? _userDataSubscription;
+  List<UserData> _userDataList = [];
+
   @override
   void initState() {
     super.initState();
     _getUserLocation();
+    _fetchUserData();
   }
 
   // Function to get user's current location
@@ -43,6 +51,58 @@ class _BottomSliderState extends State<BottomSlider> {
     setState(() {
       userLat = position.latitude;
       userLon = position.longitude;
+    });
+  }
+
+  // Function to fetch user data from Firebase Realtime Database
+  void _fetchUserData() {
+    _databaseRef = FirebaseDatabase.instance.ref().child('locations');
+    _userDataSubscription = _databaseRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        _userDataList.clear();
+        // Assuming event.snapshot.value is a Map<String, dynamic>
+        Map<dynamic, dynamic>? usersDataMap = event.snapshot.value as Map?;
+        usersDataMap?.forEach((userId, userData) {
+          // Assuming userData is a Map<String, dynamic> representing user data
+          Map<dynamic, dynamic>? userDataMap = userData as Map?;
+          if (userDataMap != null) {
+            userDataMap.forEach((id, data) {
+              _userDataList.add(UserData.fromJson(data));
+            });
+          }
+        });
+
+        // Filter data based on distance less than 20 km
+        _userDataList = _userDataList.where((userData) {
+          double locationLat = double.parse(userData.location.split(',')[0]);
+          double locationLon = double.parse(userData.location.split(',')[1]);
+          double distance = userLat != null && userLon != null
+              ? calculateDistance(userLat!, userLon!, locationLat, locationLon)
+              : 0.0; // Handle null user location
+          return distance < 20.0;
+        }).toList();
+
+        // Sort the data based on increasing distance
+        _userDataList.sort((a, b) {
+          double locationLatA = double.parse(a.location.split(',')[0]);
+          double locationLonA = double.parse(a.location.split(',')[1]);
+          double distanceA = userLat != null && userLon != null
+              ? calculateDistance(
+                  userLat!, userLon!, locationLatA, locationLonA)
+              : 0.0;
+
+          double locationLatB = double.parse(b.location.split(',')[0]);
+          double locationLonB = double.parse(b.location.split(',')[1]);
+          double distanceB = userLat != null && userLon != null
+              ? calculateDistance(
+                  userLat!, userLon!, locationLatB, locationLonB)
+              : 0.0;
+
+          return distanceA.compareTo(distanceB);
+        });
+
+        setState(() {}); // Refresh the UI
+      }
     });
   }
 
@@ -70,15 +130,15 @@ class _BottomSliderState extends State<BottomSlider> {
         ),
         border: Border(
           top: BorderSide(
-            color: kPrimaryColor,
+            color: kPrimaryColor, // Change border color if needed
             width: 3.0,
           ),
           left: BorderSide(
-            color: kPrimaryColor,
+            color: kPrimaryColor, // Change border color if needed
             width: 3.0,
           ),
           right: BorderSide(
-            color: kPrimaryColor,
+            color: kPrimaryColor, // Change border color if needed
             width: 3.0,
           ),
         ),
@@ -106,55 +166,27 @@ class _BottomSliderState extends State<BottomSlider> {
           ),
           const SizedBox(height: 10),
           Expanded(
-            child: StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection('location').snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  List<QueryDocumentSnapshot> documents = snapshot.data!.docs;
-                  List<Widget> nearbyLocations = [];
-                  List<Map<String, dynamic>> locations = [];
-
-                  for (int index = 0; index < documents.length; index++) {
-                    var userData = documents[index].data();
-                    // Extracting location data from Firestore document
-                    double locationLat = double.parse(
-                        (userData as Map<String, dynamic>)['location']
-                            .split(',')[0]);
-                    double locationLon =
-                        double.parse(userData['location'].split(',')[1]);
-                    // Calculating distance between user and location from Firestore
-                    double distance = userLat != null && userLon != null
-                        ? calculateDistance(
-                            userLat!, userLon!, locationLat, locationLon)
-                        : 0.0; // Handle null user location
-                    if (distance <= 20.0) {
-                      locations.add({
-                        'userData': userData,
-                        'distance': distance,
-                        'locationLat': locationLat,
-                        'locationLon': locationLon,
-                      });
-                    }
-                  }
-
-                  // Sort locations by distance in increasing order
-                  locations
-                      .sort((a, b) => (a['distance']).compareTo(b['distance']));
-
-                  for (var location in locations) {
-                    var userData = location['userData'];
-                    double distance = location['distance'];
-                    double locationLat = location['locationLat'];
-                    double locationLon = location['locationLon'];
-
-                    nearbyLocations.add(
-                      Container(
+            child: _userDataList.isEmpty
+                ? const Center(child: Text('No data available'))
+                : ListView.builder(
+                    itemCount: _userDataList.length,
+                    itemBuilder: (context, index) {
+                      var userData = _userDataList[index];
+                      double locationLat =
+                          double.parse(userData.location.split(',')[0]);
+                      double locationLon =
+                          double.parse(userData.location.split(',')[1]);
+                      double distance = userLat != null && userLon != null
+                          ? calculateDistance(
+                              userLat!, userLon!, locationLat, locationLon)
+                          : 0.0; // Handle null user location
+                      return Container(
                         margin: const EdgeInsets.symmetric(vertical: 5.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           border: Border.all(
-                            color: kPrimaryColor,
+                            color:
+                                kPrimaryColor, // Change border color if needed
                             width: 2.0,
                           ),
                         ),
@@ -163,13 +195,13 @@ class _BottomSliderState extends State<BottomSlider> {
                           leading: const Icon(
                             Icons.location_on_outlined,
                             size: 50,
-                            color: kPrimaryColor,
+                            color: kPrimaryColor, // Change icon color if needed
                           ),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${(userData)['Fname']}',
+                                userData.fname,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -185,7 +217,8 @@ class _BottomSliderState extends State<BottomSlider> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     side: const BorderSide(
-                                      color: kPrimaryColor,
+                                      color:
+                                          kPrimaryColor, // Change button color if needed
                                       width: 1.0,
                                     ),
                                   ),
@@ -196,17 +229,15 @@ class _BottomSliderState extends State<BottomSlider> {
                                   });
                                   _panelController.close();
                                   print(
-                                    'Directions pressed for ${userData['Fname']}}',
-                                  );
-
-                                  // Launch maps application with route
+                                      'Directions pressed for ${userData.fname}');
                                   // _launchMapsApp(locationLat, locationLon);
                                 },
                                 child: Text(
                                   '${distance.toStringAsFixed(2)} km',
-                                  // '2 km',
                                   style: const TextStyle(
-                                      fontSize: 16, color: kPrimaryColor),
+                                      fontSize: 16,
+                                      color:
+                                          kPrimaryColor), // Change button color if needed
                                 ),
                               ),
                             ],
@@ -214,16 +245,15 @@ class _BottomSliderState extends State<BottomSlider> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                userData['address'],
-                              ),
+                              Text(userData.address),
                               const SizedBox(height: 10),
                               Row(
                                 children: [
                                   ElevatedButton.icon(
                                     style: ElevatedButton.styleFrom(
                                       foregroundColor: Colors.white,
-                                      backgroundColor: kPrimaryColor,
+                                      backgroundColor:
+                                          kPrimaryColor, // Change button color if needed
                                     ),
                                     onPressed: () {
                                       setState(() {
@@ -231,9 +261,7 @@ class _BottomSliderState extends State<BottomSlider> {
                                       });
                                       _panelController.close();
                                       print(
-                                        'Directions pressed for ${userData['Fname']}',
-                                      );
-
+                                          'Directions pressed for ${userData.fname}');
                                       _launchMapsApp(locationLat, locationLon);
                                     },
                                     icon: const Icon(Icons.directions),
@@ -248,10 +276,12 @@ class _BottomSliderState extends State<BottomSlider> {
                                   const Text(
                                     'View Details',
                                     style: TextStyle(
-                                      color: kPrimaryColor,
+                                      color:
+                                          kPrimaryColor, // Change text color if needed
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline,
-                                      decorationColor: kPrimaryColor,
+                                      decorationColor:
+                                          kPrimaryColor, // Change text color if needed
                                     ),
                                   )
                                 ],
@@ -259,29 +289,9 @@ class _BottomSliderState extends State<BottomSlider> {
                             ],
                           ),
                         ),
-                      ),
-                    );
-                  }
-
-                  if (nearbyLocations.isNotEmpty) {
-                    return ListView(
-                      children: nearbyLocations,
-                    );
-                  } else {
-                    return const Center(
-                      child: Text(
-                        'No nearby food locations found',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    );
-                  }
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              },
-            ),
+                      );
+                    },
+                  ),
           ),
         ],
       ),

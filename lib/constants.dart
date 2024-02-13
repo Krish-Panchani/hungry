@@ -23,6 +23,22 @@ const fontfamily = "Muli";
 
 const defaultDuration = Duration(milliseconds: 250);
 
+const TextStyle kTextStyleB = TextStyle(
+  fontSize: 16,
+  fontFamily: 'Muli',
+  fontWeight: FontWeight.bold,
+  color: Colors.black,
+  letterSpacing: 0.5,
+);
+
+const TextStyle kTextStyleN = TextStyle(
+  fontSize: 16,
+  fontFamily: 'Muli',
+  fontWeight: FontWeight.normal,
+  color: Colors.black,
+  letterSpacing: 0.5,
+);
+
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");

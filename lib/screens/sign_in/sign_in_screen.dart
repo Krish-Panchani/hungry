@@ -6,6 +6,7 @@ import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/screens/Add%20Location/addLocationDetails.dart';
 import 'package:hunger/screens/addFood/addFoodDetails.dart';
+import 'package:hunger/screens/intiScreen.dart';
 
 import '../../components/no_account_text.dart';
 import '../../components/socal_card.dart';
@@ -105,6 +106,13 @@ class SignInScreen extends StatelessWidget {
                                       const AddLocationDetails(),
                                 ),
                               );
+                            } else if (buttonPressed == "Login") {
+                              Navigator.pushReplacement(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => const InitScreen(),
+                                ),
+                              );
                             }
                           }
                           print(buttonPressed);
@@ -113,7 +121,9 @@ class SignInScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const NoAccountText(),
+                  const NoAccountText(
+                    buttonPressed: 'Sign In',
+                  ),
                 ],
               ),
             ),

@@ -1,8 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+import 'dart:developer';
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,6 +13,32 @@ import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/belowAppbar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/screens/main/screens/componets/bottomSlideBar.dart';
+
+class UserData {
+  final String fname;
+  final String address;
+  final String details;
+  final String location;
+  final String phone;
+
+  UserData({
+    required this.fname,
+    required this.address,
+    required this.details,
+    required this.location,
+    required this.phone,
+  });
+
+  factory UserData.fromJson(Map<dynamic, dynamic> json) {
+    return UserData(
+      fname: json['Fname'] ?? '',
+      address: json['address'] ?? '',
+      details: json['details'] ?? '',
+      location: json['location'] ?? '',
+      phone: json['phone'] ?? '',
+    );
+  }
+}
 
 class HomeScreen extends StatefulWidget {
   final String? currentAddress;
@@ -25,6 +52,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late DatabaseReference _databaseRef;
+
+  StreamSubscription<dynamic>? _userDataSubscription;
+  final List<UserData> _userDataList = [];
+
   late String _currentAddress;
 
   final Completer<GoogleMapController> _controller = Completer();
@@ -65,30 +97,36 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void loadUserLocations() {
-    // Fetch users' locations from Firestore
-    FirebaseFirestore.instance.collection('location').get().then((snapshot) {
-      for (var doc in snapshot.docs) {
-        var data = doc.data();
-        // Parse the location string into latitude and longitude
-        var locationString = data['location'] as String;
-        var locationArray = locationString.split(',');
-        var latitude = double.parse(locationArray[0]);
-        var longitude = double.parse(locationArray[1]);
-
-        // Add markers for each user's location on the map
-        _markers.add(Marker(
-          markerId: MarkerId(doc.id),
-          position: LatLng(latitude, longitude),
-          infoWindow: InfoWindow(
-            title:
-                '${data['Fname']}', // Example: Combine first name and last name for the title
-            snippet: data['address'], // Show address as snippet
-          ),
-          icon: _markerIcon,
-          // BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-        ));
+    _databaseRef = FirebaseDatabase.instance.ref().child('locations');
+    _userDataSubscription = _databaseRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        _userDataList.clear();
+        // Assuming event.snapshot.value is a Map<String, dynamic>
+        Map<dynamic, dynamic>? usersDataMap = event.snapshot.value as Map?;
+        usersDataMap?.forEach((userId, userData) {
+          // Assuming userData is a Map<String, dynamic> representing user data
+          Map<dynamic, dynamic>? userDataMap = userData as Map?;
+          if (userDataMap != null) {
+            userDataMap.forEach((id, data) {
+              _userDataList.add(UserData.fromJson(data));
+              log('User Data: ${data as Map}');
+              _markers.add(Marker(
+                markerId: MarkerId(id.toString()),
+                position: LatLng(
+                  double.parse(data['location'].toString().split(',')[0]),
+                  double.parse(data['location'].toString().split(',')[1]),
+                ),
+                infoWindow: InfoWindow(
+                  title: data['Fname'],
+                  snippet: data['address'],
+                ),
+                icon: _markerIcon,
+              ));
+            });
+          }
+        });
+        setState(() {}); // Refresh the UI
       }
-      setState(() {}); // Update the UI to reflect the changes
     });
   }
 
@@ -100,21 +138,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _onAddMarkerButtonPressed() {
-    setState(() {
-      _markers.add(Marker(
-        // This marker id can be anything that uniquely identifies each marker.
-        markerId: MarkerId(_lastMapPosition.toString()),
-        position: _lastMapPosition,
-        infoWindow: const InfoWindow(
-          title: 'Really cool place',
-          snippet: '5 Star Rating',
-        ),
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    });
-  }
-
   void _onCameraMove(CameraPosition position) {
     _lastMapPosition = position.target;
   }
@@ -122,7 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
 
-    // Add markers for the user's current location
     getUserCurrentLocation().then((value) {
       _markers.add(Marker(
         markerId: const MarkerId("1"),
@@ -132,7 +154,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ));
 
-      // Center the map on the user's location
       CameraPosition cameraPosition = CameraPosition(
         target: LatLng(value.latitude, value.longitude),
         zoom: 14,
@@ -143,11 +164,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<Position> getUserCurrentLocation() async {
-    // Check if location permission is already granted
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
-      // Permission not granted, request it
       await Geolocator.requestPermission();
     }
 
@@ -186,59 +205,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          // Positioned(
-          //   top: 70.0,
-          //   right: 16.0,
-          //   child: Column(
-          //     children: [
-          //       FloatingActionButton(
-          //         onPressed: _onMapTypeButtonPressed,
-          //         materialTapTargetSize: MaterialTapTargetSize.padded,
-          //         backgroundColor: kPrimaryColor,
-          //         child: const Icon(Icons.map, size: 35.0),
-          //       ),
-          //       const SizedBox(height: 10.0),
-          //       FloatingActionButton(
-          //         onPressed: _onAddMarkerButtonPressed,
-          //         materialTapTargetSize: MaterialTapTargetSize.padded,
-          //         backgroundColor: kPrimaryColor,
-          //         child: const Icon(Icons.add_location, size: 35.0),
-          //       ),
-          //       const SizedBox(height: 10.0),
-          //       FloatingActionButton(
-          //         backgroundColor: kPrimaryColor,
-          //         onPressed: () async {
-          //           getUserCurrentLocation().then((value) async {
-          //             print("${value.latitude} ${value.longitude}");
-
-          //             _markers.add(Marker(
-          //               markerId: const MarkerId("2"),
-          //               position: LatLng(value.latitude, value.longitude),
-          //               infoWindow: const InfoWindow(
-          //                 title: 'My Current Location',
-          //               ),
-          //             ));
-
-          //             CameraPosition cameraPosition = CameraPosition(
-          //               target: LatLng(value.latitude, value.longitude),
-          //               zoom: 14,
-          //             );
-
-          //             final GoogleMapController controller =
-          //                 await _controller.future;
-          //             controller.animateCamera(
-          //                 CameraUpdate.newCameraPosition(cameraPosition));
-          //             setState(() {});
-          //           });
-          //         },
-          //         child: const Icon(
-          //           Icons.location_searching,
-          //           size: 35.0,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
           AddressBox(initialAddress: _currentAddress),
           const BottomSlider(),
         ],

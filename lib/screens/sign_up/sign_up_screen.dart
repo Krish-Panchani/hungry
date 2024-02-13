@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
+import 'package:hunger/screens/Add%20Location/addLocationDetails.dart';
 import 'package:hunger/screens/addFood/addFoodDetails.dart';
+import 'package:hunger/screens/intiScreen.dart';
 
 import '../../components/socal_card.dart';
 import '../../constants.dart';
@@ -12,7 +14,9 @@ import 'components/sign_up_form.dart';
 
 // ignore: must_be_immutable
 class SignUpScreen extends StatelessWidget {
-  ValueNotifier userCredential = ValueNotifier('');
+  final String buttonPressed;
+  final ValueNotifier<UserCredential?> userCredential =
+      ValueNotifier<UserCredential?>(null);
 
   Future<dynamic> signInWithGoogle() async {
     try {
@@ -33,7 +37,7 @@ class SignUpScreen extends StatelessWidget {
     }
   }
 
-  SignUpScreen({super.key});
+  SignUpScreen({super.key, required this.buttonPressed});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,16 +74,34 @@ class SignUpScreen extends StatelessWidget {
                       SocalCard(
                         icon: "assets/icons/google-icon.svg",
                         press: () async {
-                          userCredential.value = await signInWithGoogle();
+                          await signInWithGoogle();
                           if (userCredential.value != null) {
-                            print(userCredential.value.user!.email);
+                            print(userCredential.value!.user!.email);
+                            if (buttonPressed == "Submit Remaining Food") {
+                              Navigator.pushReplacement(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => const AddFoodDetails(),
+                                ),
+                              );
+                            } else if (buttonPressed == "Add more Locations") {
+                              Navigator.pushReplacement(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) =>
+                                      const AddLocationDetails(),
+                                ),
+                              );
+                            } else if (buttonPressed == "Login") {
+                              Navigator.pushReplacement(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => const InitScreen(),
+                                ),
+                              );
+                            }
                           }
-                          Navigator.pushReplacement(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const AddFoodDetails(),
-                            ),
-                          );
+                          print(buttonPressed);
                         },
                       ),
                       // SocalCard(

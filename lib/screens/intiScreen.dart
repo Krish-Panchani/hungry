@@ -96,34 +96,14 @@ class _InitScreenState extends State<InitScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       User? user = FirebaseAuth.instance.currentUser;
-
                       if (user != null) {
-                        // User is logged in
-                        DocumentSnapshot userSnapshot = await FirebaseFirestore
-                            .instance
-                            .collection("users")
-                            .doc(user.uid)
-                            .get();
-
-                        if (userSnapshot.exists) {
-                          // User data exists in Firestore, navigate to FoodDetailsScreen
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const FoodDetailsScreen(),
-                            ),
-                          );
-                        } else {
-                          // User is logged in but does not have data in users collection
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const AddFoodDetails(),
-                            ),
-                          );
-                        }
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const AddFoodDetails(),
+                          ),
+                        );
                       } else {
-                        // User is not logged in, navigate to SignInScreen
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
@@ -132,6 +112,42 @@ class _InitScreenState extends State<InitScreen> {
                           ),
                         );
                       }
+
+                      // if (user != null) {
+                      //   // User is logged in
+                      //   DocumentSnapshot userSnapshot = await FirebaseFirestore
+                      //       .instance
+                      //       .collection("users")
+                      //       .doc(user.uid)
+                      //       .get();
+
+                      //   if (userSnapshot.exists) {
+                      //     // User data exists in Firestore, navigate to FoodDetailsScreen
+                      //     Navigator.push(
+                      //       context,
+                      //       CupertinoPageRoute(
+                      //         builder: (context) => const FoodDetailsScreen(),
+                      //       ),
+                      //     );
+                      //   } else {
+                      //     // User is logged in but does not have data in users collection
+                      //     Navigator.push(
+                      //       context,
+                      //       CupertinoPageRoute(
+                      //         builder: (context) => const AddFoodDetails(),
+                      //       ),
+                      //     );
+                      //   }
+                      // } else {
+                      //   // User is not logged in, navigate to SignInScreen
+                      //   Navigator.push(
+                      //     context,
+                      //     CupertinoPageRoute(
+                      //       builder: (context) => SignInScreen(
+                      //           buttonPressed: "Submit Remaining Food"),
+                      //     ),
+                      //   );
+                      // }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: kPrimaryColor,
@@ -161,35 +177,14 @@ class _InitScreenState extends State<InitScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       User? user = FirebaseAuth.instance.currentUser;
-
                       if (user != null) {
-                        // User is logged in
-                        DocumentSnapshot locationSnapshot =
-                            await FirebaseFirestore.instance
-                                .collection("location")
-                                .doc(user.uid)
-                                .get();
-
-                        if (locationSnapshot.exists) {
-                          // User data exists in Firestore location collection, navigate to FoodDetailsScreen
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) =>
-                                  const LocationDetailsScreen(),
-                            ),
-                          );
-                        } else {
-                          // User is logged in but does not have data in location collection
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const AddLocationDetails(),
-                            ),
-                          );
-                        }
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const AddLocationDetails(),
+                          ),
+                        );
                       } else {
-                        // User is not logged in, navigate to SignInScreen
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
@@ -198,6 +193,43 @@ class _InitScreenState extends State<InitScreen> {
                           ),
                         );
                       }
+
+                      // if (user != null) {
+                      //   // User is logged in
+                      //   DocumentSnapshot locationSnapshot =
+                      //       await FirebaseFirestore.instance
+                      //           .collection("location")
+                      //           .doc(user.uid)
+                      //           .get();
+
+                      //   if (locationSnapshot.exists) {
+                      //     // User data exists in Firestore location collection, navigate to FoodDetailsScreen
+                      //     Navigator.push(
+                      //       context,
+                      //       CupertinoPageRoute(
+                      //         builder: (context) =>
+                      //             const LocationDetailsScreen(),
+                      //       ),
+                      //     );
+                      //   } else {
+                      //     // User is logged in but does not have data in location collection
+                      //     Navigator.push(
+                      //       context,
+                      //       CupertinoPageRoute(
+                      //         builder: (context) => const AddLocationDetails(),
+                      //       ),
+                      //     );
+                      //   }
+                      // } else {
+                      //   // User is not logged in, navigate to SignInScreen
+                      //   Navigator.push(
+                      //     context,
+                      //     CupertinoPageRoute(
+                      //       builder: (context) => SignInScreen(
+                      //           buttonPressed: "Add more Locations"),
+                      //     ),
+                      //   );
+                      // }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: kPrimaryColor,

@@ -1,14 +1,12 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/screens/Add%20Location/LocationDetails.dart';
-import 'package:hunger/screens/Add%20Location/addLocationDetails.dart';
 import 'package:hunger/screens/Add%20Location/mapScreen2.dart';
-import 'package:hunger/screens/addFood/mapScreen.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../components/custom_surfix_icon.dart';
@@ -203,7 +201,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
                 LatLng? location = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MapScreen(
+                    builder: (context) => MapScreen2(
                       firstName: FnameController.text.trim(),
                       phoneNumber: PhoneController.text.trim(),
                       address: addressController.text.trim(),
@@ -214,7 +212,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
 
                 // If a location is selected on the map screen, save the data to Firestore
                 if (location != null) {
-                  saveDataToFirestore(location);
+                  saveDataToRealtimeDatabase(location);
                 }
               }
             },
@@ -251,7 +249,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
     }
   }
 
-  void saveDataToFirestore(LatLng location) async {
+  void saveDataToRealtimeDatabase(LatLng location) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -262,48 +260,34 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
       String details = detialsController.text.trim();
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
-      String id = const Uuid().v4();
 
-      Map<String, dynamic> userData = {
-        "id": id,
+      String id = const Uuid().v4(); // Generate a unique ID using Uuid package
+
+      DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+
+      // Create a new child node under 'users' with the generated ID
+      databaseReference.child('locations').child(userId).child(id).set({
         "Fname": Fname,
         "phone": phone,
         "address": address,
         "details": details,
         "location": selectedLocationString,
-      };
+      }).then((_) {
+        // Data saved successfully
+        log("Location data saved to Realtime Database");
 
-      await FirebaseFirestore.instance
-          .collection("location")
-          .doc(userId)
-          .set(userData);
-
-      log("Location data saved to Firestore");
-
-      // Check if the user document exists in the 'location' collection
-      DocumentSnapshot locationSnapshot = await FirebaseFirestore.instance
-          .collection("location")
-          .doc(userId)
-          .get();
-
-      if (locationSnapshot.exists) {
-        // Navigate to LocationDetailsScreen only if user location data exists
+        // Navigate to FoodDetailsScreen
         Navigator.push(
           context,
           CupertinoPageRoute(
             builder: (context) => const LocationDetailsScreen(),
           ),
         );
-      } else {
-        // Handle case where user location data does not exist
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => const AddLocationDetails(),
-          ),
-        );
+      }).catchError((error) {
+        // Handle error
+        print("Error saving data: $error");
         // You can provide feedback to the user or perform other actions here
-      }
+      });
     }
   }
 }

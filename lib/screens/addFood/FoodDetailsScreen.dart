@@ -1,9 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
+import 'package:hunger/models/UserModal.dart';
 import 'package:hunger/screens/addFood/addFoodDetails.dart';
 
 class FoodDetailsScreen extends StatefulWidget {
@@ -14,141 +17,138 @@ class FoodDetailsScreen extends StatefulWidget {
 }
 
 class _FoodDetailsScreenState extends State<FoodDetailsScreen> {
-  late Future<DocumentSnapshot<Map<String, dynamic>>> _userDataFuture;
+  late DatabaseReference _databaseRef;
 
+  StreamSubscription<dynamic>? _userDataSubscription;
+  final List<UserData> _userDataList = [];
+
+  @override
   @override
   void initState() {
     super.initState();
-    _userDataFuture = _fetchUserData();
+    _databaseRef = FirebaseDatabase.instance.ref().child('users');
+    _userDataSubscription = _databaseRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        _userDataList.clear();
+        // Get the current user's ID
+        String? userId = FirebaseAuth.instance.currentUser?.uid;
+        if (userId != null) {
+          // Assuming event.snapshot.value is a Map<String, dynamic>
+          Map<dynamic, dynamic>? usersDataMap = event.snapshot.value as Map?;
+          // Check if the current user's data exists in the snapshot
+          if (usersDataMap != null && usersDataMap.containsKey(userId)) {
+            // Retrieve the current user's data
+            Map<dynamic, dynamic>? userDataMap =
+                usersDataMap[userId] as Map<dynamic, dynamic>?;
+            // Assuming userDataMap is a Map<String, dynamic> representing user data
+            if (userDataMap != null) {
+              userDataMap.forEach((id, data) {
+                _userDataList.add(UserData.fromJson(data));
+              });
+            }
+          }
+          setState(() {}); // Refresh the UI
+        }
+      }
+    });
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> _fetchUserData() async {
-    // Get the current user
-    var user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Fetch user data from Firestore
-      return await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-    } else {
-      throw Exception('User not logged in');
-    }
+  @override
+  void dispose() {
+    _userDataSubscription?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const MyAppBar(),
-      drawer: const MyDrawer(showLogOut: true,),
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: _userDataFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData && snapshot.data!.exists) {
-            // User data exists, extract required fields
-            var userData = snapshot.data!.data()!;
-            var fname = userData['Fname'];
-            var phone = userData['phone'];
-            var details = userData['details'];
-            return Stack(
-              children: [
-                Column(
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: Container(
-                          width: 300,
-                          height: 150,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: kPrimaryColor),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+      drawer: const MyDrawer(
+        showLogOut: true,
+      ),
+      body: _userDataList.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            ) // Show a loading indicator while data is being fetched
+          : SingleChildScrollView(
+              child: Column(
+                children: _userDataList.map((userData) {
+                  return ListTile(
+                    title: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: kPrimaryColor, width: 1.5),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
                               children: [
-                                Text(
-                                  'Name: $fname',
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                    height: 8), // Add some space (8 pixels
-                                Text(
-                                  'Contact: $phone',
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(
-                                    height: 8), // Add some space (8 pixels
-
-                                Text(
-                                  'Details: $details',
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                const TextSpan(
+                                    text: 'Name: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: userData.fname, style: kTextStyleN),
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  bottom: 16,
-                  right: 16,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddFoodDetails(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: 100,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: kPrimaryColor,
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: const Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Add more',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
+                          const SizedBox(height: 5),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                    text: 'Address: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: userData.address, style: kTextStyleN),
+                              ],
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 5),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                    text: 'Details: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: userData.details, style: kTextStyleN),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                    text: 'Phone: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: userData.phone, style: kTextStyleN),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                )
-              ],
-            );
-          } else {
-            return const Center(child: Text('No data available'));
-          }
+                  );
+                }).toList(),
+              ),
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed action here
+          Navigator.push(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => const AddFoodDetails(),
+            ),
+          );
         },
+        backgroundColor: kPrimaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: const Icon(Icons.add),
       ),
     );
   }
-}
-
-class AddFoodDetailsScreen {
-  const AddFoodDetailsScreen();
 }

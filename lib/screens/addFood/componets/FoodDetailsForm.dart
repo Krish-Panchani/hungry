@@ -1,12 +1,11 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/screens/addFood/FoodDetailsScreen.dart';
-import 'package:hunger/screens/addFood/addFoodDetails.dart';
 import 'package:hunger/screens/addFood/mapScreen.dart';
 import 'package:uuid/uuid.dart';
 
@@ -218,7 +217,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
 
                 // If a location is selected on the map screen, save the data to Firestore
                 if (location != null) {
-                  saveDataToFirestore(location);
+                  saveDataToRealtimeDatabase(location);
                 }
               }
             },
@@ -257,7 +256,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
     }
   }
 
-  void saveDataToFirestore(LatLng location) async {
+  void saveDataToRealtimeDatabase(LatLng location) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -269,48 +268,33 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
 
-      String id = const Uuid().v4();
+      String id = const Uuid().v4(); // Generate a unique ID using Uuid package
 
-      Map<String, dynamic> userData = {
-        "id": id,
+      DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+
+      // Create a new child node under 'users' with the generated ID
+      databaseReference.child('users').child(userId).child(id).set({
         "Fname": Fname,
         "phone": phone,
         "address": address,
         "details": details,
         "location": selectedLocationString,
-      };
+      }).then((_) {
+        // Data saved successfully
+        log("User data saved to Realtime Database");
 
-      await FirebaseFirestore.instance
-          .collection("users")
-          .doc(userId)
-          .set(userData);
-
-      log("User data saved to Firestore");
-
-      // Check if the user document exists in Firestore
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(userId)
-          .get();
-
-      if (userSnapshot.exists) {
-        // Navigate to FoodDetailsScreen only if user data exists
+        // Navigate to FoodDetailsScreen
         Navigator.push(
           context,
           CupertinoPageRoute(
             builder: (context) => const FoodDetailsScreen(),
           ),
         );
-      } else {
-        // Handle case where user data does not exist
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => const AddFoodDetails(),
-          ),
-        );
+      }).catchError((error) {
+        // Handle error
+        print("Error saving data: $error");
         // You can provide feedback to the user or perform other actions here
-      }
+      });
     }
   }
 }
