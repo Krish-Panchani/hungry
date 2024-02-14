@@ -72,7 +72,7 @@ class _SignFormState extends State<SignForm> {
             // );
           } else if (widget.buttonPressed == "Add more Locations") {
             var locDoc = await FirebaseFirestore.instance
-                .collection('users')
+                .collection('locations')
                 .doc(userCredential.user!.uid)
                 .get();
             if (locDoc.exists) {
