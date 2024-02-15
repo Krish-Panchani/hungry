@@ -74,7 +74,8 @@ class _AddressBoxState extends State<AddressBox> {
       if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks.first;
         _currentAddress = "${placemark.locality}\n"
-            "${placemark.subLocality} ${placemark.subAdministrativeArea} ${placemark.country} "
+            "${placemark.subAdministrativeArea}"
+            "${placemark.country}"
             "${placemark.postalCode}";
       } else {
         _currentAddress = "Address not found";
@@ -128,7 +129,6 @@ class _AddressBoxState extends State<AddressBox> {
                   ),
                 ),
               ),
-              // const BackButton(),
             ],
           ),
         ),

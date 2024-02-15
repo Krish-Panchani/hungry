@@ -56,7 +56,7 @@ class _InitScreenState extends State<InitScreen> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text('Are You Hungry??'),
+                    child: Text('Are You Hungry?'),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -88,7 +88,7 @@ class _InitScreenState extends State<InitScreen> {
                   const SizedBox(height: 16),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text('You have Remaining Food??'),
+                    child: Text('You have Remaining Food?'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -109,42 +109,6 @@ class _InitScreenState extends State<InitScreen> {
                           ),
                         );
                       }
-
-                      // if (user != null) {
-                      //   // User is logged in
-                      //   DocumentSnapshot userSnapshot = await FirebaseFirestore
-                      //       .instance
-                      //       .collection("users")
-                      //       .doc(user.uid)
-                      //       .get();
-
-                      //   if (userSnapshot.exists) {
-                      //     // User data exists in Firestore, navigate to FoodDetailsScreen
-                      //     Navigator.push(
-                      //       context,
-                      //       CupertinoPageRoute(
-                      //         builder: (context) => const FoodDetailsScreen(),
-                      //       ),
-                      //     );
-                      //   } else {
-                      //     // User is logged in but does not have data in users collection
-                      //     Navigator.push(
-                      //       context,
-                      //       CupertinoPageRoute(
-                      //         builder: (context) => const AddFoodDetails(),
-                      //       ),
-                      //     );
-                      //   }
-                      // } else {
-                      //   // User is not logged in, navigate to SignInScreen
-                      //   Navigator.push(
-                      //     context,
-                      //     CupertinoPageRoute(
-                      //       builder: (context) => SignInScreen(
-                      //           buttonPressed: "Submit Remaining Food"),
-                      //     ),
-                      //   );
-                      // }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: kPrimaryColor,
@@ -169,7 +133,7 @@ class _InitScreenState extends State<InitScreen> {
                   const SizedBox(height: 16),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text('Want to help us??'),
+                    child: Text('Want to help us?'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -190,43 +154,6 @@ class _InitScreenState extends State<InitScreen> {
                           ),
                         );
                       }
-
-                      // if (user != null) {
-                      //   // User is logged in
-                      //   DocumentSnapshot locationSnapshot =
-                      //       await FirebaseFirestore.instance
-                      //           .collection("location")
-                      //           .doc(user.uid)
-                      //           .get();
-
-                      //   if (locationSnapshot.exists) {
-                      //     // User data exists in Firestore location collection, navigate to FoodDetailsScreen
-                      //     Navigator.push(
-                      //       context,
-                      //       CupertinoPageRoute(
-                      //         builder: (context) =>
-                      //             const LocationDetailsScreen(),
-                      //       ),
-                      //     );
-                      //   } else {
-                      //     // User is logged in but does not have data in location collection
-                      //     Navigator.push(
-                      //       context,
-                      //       CupertinoPageRoute(
-                      //         builder: (context) => const AddLocationDetails(),
-                      //       ),
-                      //     );
-                      //   }
-                      // } else {
-                      //   // User is not logged in, navigate to SignInScreen
-                      //   Navigator.push(
-                      //     context,
-                      //     CupertinoPageRoute(
-                      //       builder: (context) => SignInScreen(
-                      //           buttonPressed: "Add more Locations"),
-                      //     ),
-                      //   );
-                      // }
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: kPrimaryColor,
@@ -244,6 +171,51 @@ class _InitScreenState extends State<InitScreen> {
                     ),
                     child: const Text(
                       'Add more Locations',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Want to register your Food Bank or NGO?'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const AddFoodDetails(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => SignInScreen(
+                                buttonPressed: "Register Food Center"),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: kPrimaryColor,
+                      backgroundColor: Colors.white, // Text color
+                      padding: const EdgeInsets.all(16), // Button padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        side: const BorderSide(
+                          color: kPrimaryColor,
+                          width: 2.0,
+                        ), // Rounded corners
+                      ),
+                      elevation: 5, // Elevation (shadow)
+                      minimumSize: const Size(double.infinity, 0), // Full width
+                    ),
+                    child: const Text(
+                      'Register Food Center',
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),

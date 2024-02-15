@@ -31,7 +31,7 @@ class BottomSlider extends StatefulWidget {
 class _BottomSliderState extends State<BottomSlider> {
   final PanelController _panelController = PanelController();
 
-  late bool _showSeeAll = false;
+  late bool? _showSeeAll = true;
   late double? userLat;
   late double? userLon;
   late DatabaseReference _databaseRef;
@@ -69,34 +69,36 @@ class _BottomSliderState extends State<BottomSlider> {
           }
         });
 
-        _userDataList = _userDataList.where((userData) {
-          double locationLat = double.parse(userData.location.split(',')[0]);
-          double locationLon = double.parse(userData.location.split(',')[1]);
-          double distance = userLat != null && userLon != null
-              ? calculateDistance(userLat!, userLon!, locationLat, locationLon)
-              : 0.0;
-          return distance < 20.0;
-        }).toList();
+        _getUserLocation().then((_) {
+          if (userLat != null && userLon != null) {
+            _userDataList = _userDataList.where((userData) {
+              double locationLat =
+                  double.parse(userData.location.split(',')[0]);
+              double locationLon =
+                  double.parse(userData.location.split(',')[1]);
+              double distance = calculateDistance(
+                  userLat!, userLon!, locationLat, locationLon);
+              return distance < 20.0;
+            }).toList();
 
-        _userDataList.sort((a, b) {
-          double locationLatA = double.parse(a.location.split(',')[0]);
-          double locationLonA = double.parse(a.location.split(',')[1]);
-          double distanceA = userLat != null && userLon != null
-              ? calculateDistance(
-                  userLat!, userLon!, locationLatA, locationLonA)
-              : 0.0;
+            // Sort distances after filtering
+            _userDataList.sort((a, b) {
+              double locationLatA = double.parse(a.location.split(',')[0]);
+              double locationLonA = double.parse(a.location.split(',')[1]);
+              double distanceA = calculateDistance(
+                  userLat!, userLon!, locationLatA, locationLonA);
 
-          double locationLatB = double.parse(b.location.split(',')[0]);
-          double locationLonB = double.parse(b.location.split(',')[1]);
-          double distanceB = userLat != null && userLon != null
-              ? calculateDistance(
-                  userLat!, userLon!, locationLatB, locationLonB)
-              : 0.0;
+              double locationLatB = double.parse(b.location.split(',')[0]);
+              double locationLonB = double.parse(b.location.split(',')[1]);
+              double distanceB = calculateDistance(
+                  userLat!, userLon!, locationLatB, locationLonB);
 
-          return distanceA.compareTo(distanceB);
+              return distanceA.compareTo(distanceB);
+            });
+
+            setState(() {});
+          }
         });
-
-        setState(() {});
       }
     });
   }
@@ -107,7 +109,7 @@ class _BottomSliderState extends State<BottomSlider> {
       backdropEnabled: true,
       borderRadius: BorderRadius.circular(24.0),
       controller: _panelController,
-      minHeight: _userDataList.isNotEmpty ? 60 : 200,
+      minHeight: _showSeeAll! ? 200 : 60,
       panel: buildPanel(),
       isDraggable: true,
       parallaxEnabled: true,
@@ -227,6 +229,9 @@ class _BottomSliderState extends State<BottomSlider> {
                                   ),
                                 ),
                                 onPressed: () {
+                                  setState(() {
+                                    _showSeeAll = false;
+                                  });
                                   _panelController.close();
                                   print(
                                       'Directions pressed for ${userData.fname}');
@@ -254,9 +259,9 @@ class _BottomSliderState extends State<BottomSlider> {
                                       backgroundColor: kPrimaryColor,
                                     ),
                                     onPressed: () {
-                                      setState(() {
-                                        _showSeeAll = true;
-                                      });
+                                      // setState(() {
+                                      //   _showSeeAll = true;
+                                      // });
                                       _panelController.close();
                                       print(
                                           'Directions pressed for ${userData.fname}');

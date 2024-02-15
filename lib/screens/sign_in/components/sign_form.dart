@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hunger/screens/Add%20Location/LocationDetails.dart';
 import 'package:hunger/screens/Add%20Location/addLocationDetails.dart';
+import 'package:hunger/screens/FoodBank/FoodBankDetails.dart';
+import 'package:hunger/screens/FoodBank/addFoodBankDetails.dart';
 import 'package:hunger/screens/addFood/FoodDetailsScreen.dart';
 
 import 'package:hunger/screens/addFood/addFoodDetails.dart';
@@ -41,7 +43,7 @@ class _SignFormState extends State<SignForm> {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
-          Navigator.popUntil(context, (route) => route.isFirst);
+          // Navigator.popUntil(context, (route) => route.isFirst);
           // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
           if (widget.buttonPressed == "Submit Remaining Food") {
             var userDoc = await FirebaseFirestore.instance
@@ -87,6 +89,32 @@ class _SignFormState extends State<SignForm> {
                 context,
                 CupertinoPageRoute(
                   builder: (context) => const AddLocationDetails(),
+                ),
+              );
+            }
+            // Navigator.pushReplacement(
+            //   context,
+            //   CupertinoPageRoute(
+            //     builder: (context) => const AddLocationDetails(),
+            //   ),
+            // );
+          } else if (widget.buttonPressed == "Register Food Center") {
+            var locDoc = await FirebaseFirestore.instance
+                .collection('locations')
+                .doc(userCredential.user!.uid)
+                .get();
+            if (locDoc.exists) {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => const FoodBankDetailsScreen(),
+                ),
+              );
+            } else {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => const AddFoodBankDetails(),
                 ),
               );
             }

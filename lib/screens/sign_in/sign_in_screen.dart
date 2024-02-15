@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/screens/Add%20Location/addLocationDetails.dart';
+import 'package:hunger/screens/FoodBank/addFoodBankDetails.dart';
 import 'package:hunger/screens/addFood/addFoodDetails.dart';
 import 'package:hunger/screens/intiScreen.dart';
 
@@ -104,6 +105,15 @@ class SignInScreen extends StatelessWidget {
                                 CupertinoPageRoute(
                                   builder: (context) =>
                                       const AddLocationDetails(),
+                                ),
+                              );
+                            } else if (buttonPressed ==
+                                "Register Food Center") {
+                              Navigator.pushReplacement(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) =>
+                                      const AddFoodBankDetails(),
                                 ),
                               );
                             } else if (buttonPressed == "Login") {
