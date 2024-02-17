@@ -34,7 +34,8 @@ class _BottomSliderState extends State<BottomSlider> {
   late bool? _showSeeAll = true;
   late double? userLat;
   late double? userLon;
-  late DatabaseReference _databaseRef;
+  late DatabaseReference _locationsRef;
+  late DatabaseReference _foodBanksRef;
   late StreamSubscription<dynamic> _userDataSubscription;
   List<UserData> _userDataList = [];
 
@@ -55,52 +56,59 @@ class _BottomSliderState extends State<BottomSlider> {
   }
 
   void _fetchUserData() {
-    _databaseRef = FirebaseDatabase.instance.ref().child('locations');
-    _userDataSubscription = _databaseRef.onValue.listen((event) {
-      if (event.snapshot.value != null) {
-        _userDataList.clear();
-        Map<dynamic, dynamic>? usersDataMap = event.snapshot.value as Map?;
-        usersDataMap?.forEach((userId, userData) {
-          Map<dynamic, dynamic>? userDataMap = userData as Map?;
-          if (userDataMap != null) {
-            userDataMap.forEach((id, data) {
-              _userDataList.add(UserData.fromJson(data));
-            });
-          }
-        });
+    _locationsRef = FirebaseDatabase.instance.ref().child('locations');
+    _foodBanksRef = FirebaseDatabase.instance.ref().child('FoodBanks');
 
-        _getUserLocation().then((_) {
-          if (userLat != null && userLon != null) {
-            _userDataList = _userDataList.where((userData) {
-              double locationLat =
-                  double.parse(userData.location.split(',')[0]);
-              double locationLon =
-                  double.parse(userData.location.split(',')[1]);
-              double distance = calculateDistance(
-                  userLat!, userLon!, locationLat, locationLon);
-              return distance < 20.0;
-            }).toList();
-
-            // Sort distances after filtering
-            _userDataList.sort((a, b) {
-              double locationLatA = double.parse(a.location.split(',')[0]);
-              double locationLonA = double.parse(a.location.split(',')[1]);
-              double distanceA = calculateDistance(
-                  userLat!, userLon!, locationLatA, locationLonA);
-
-              double locationLatB = double.parse(b.location.split(',')[0]);
-              double locationLonB = double.parse(b.location.split(',')[1]);
-              double distanceB = calculateDistance(
-                  userLat!, userLon!, locationLatB, locationLonB);
-
-              return distanceA.compareTo(distanceB);
-            });
-
-            setState(() {});
-          }
-        });
-      }
+    _userDataSubscription = _locationsRef.onValue.listen((event) {
+      _processData(event.snapshot.value, 'location');
     });
+
+    _userDataSubscription = _foodBanksRef.onValue.listen((event) {
+      _processData(event.snapshot.value, 'foodBank');
+    });
+  }
+
+  void _processData(dynamic data, String type) {
+    if (data != null) {
+      Map<dynamic, dynamic>? usersDataMap = data as Map?;
+      usersDataMap?.forEach((userId, userData) {
+        Map<dynamic, dynamic>? userDataMap = userData as Map?;
+        if (userDataMap != null) {
+          userDataMap.forEach((id, data) {
+            _userDataList.add(UserData.fromJson(data));
+          });
+        }
+      });
+
+      _getUserLocation().then((_) {
+        if (userLat != null && userLon != null) {
+          _userDataList = _userDataList.where((userData) {
+            double locationLat = double.parse(userData.location.split(',')[0]);
+            double locationLon = double.parse(userData.location.split(',')[1]);
+            double distance =
+                calculateDistance(userLat!, userLon!, locationLat, locationLon);
+            return distance < 20.0;
+          }).toList();
+
+          // Sort distances after filtering
+          _userDataList.sort((a, b) {
+            double locationLatA = double.parse(a.location.split(',')[0]);
+            double locationLonA = double.parse(a.location.split(',')[1]);
+            double distanceA = calculateDistance(
+                userLat!, userLon!, locationLatA, locationLonA);
+
+            double locationLatB = double.parse(b.location.split(',')[0]);
+            double locationLonB = double.parse(b.location.split(',')[1]);
+            double distanceB = calculateDistance(
+                userLat!, userLon!, locationLatB, locationLonB);
+
+            return distanceA.compareTo(distanceB);
+          });
+
+          setState(() {});
+        }
+      });
+    }
   }
 
   @override
