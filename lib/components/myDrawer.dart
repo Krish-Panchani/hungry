@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/pages/AboutUs.dart';
+import 'package:hunger/pages/ContactUs.dart';
 import 'package:hunger/screens/intiScreen.dart';
 import 'package:hunger/screens/sign_in/sign_in_screen.dart';
 
@@ -56,7 +57,7 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AboutUsScreen(),
+                  builder: (context) => const ContactUsScreen(),
                 ),
               );
             },
