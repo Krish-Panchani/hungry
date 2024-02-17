@@ -221,11 +221,11 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
               }
             },
             child: const Text(
-              "Select Location of Food Bank",
+              "Select Location",
               style: TextStyle(
                 color: kPrimaryColor,
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 15,
               ),
             ),
           ),

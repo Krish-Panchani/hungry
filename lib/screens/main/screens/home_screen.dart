@@ -12,33 +12,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/belowAppbar.dart';
 import 'package:hunger/components/myDrawer.dart';
+import 'package:hunger/models/UserModal.dart';
 import 'package:hunger/screens/main/screens/componets/bottomSlideBar.dart';
-
-class UserData {
-  final String fname;
-  final String address;
-  final String details;
-  final String location;
-  final String phone;
-
-  UserData({
-    required this.fname,
-    required this.address,
-    required this.details,
-    required this.location,
-    required this.phone,
-  });
-
-  factory UserData.fromJson(Map<dynamic, dynamic> json) {
-    return UserData(
-      fname: json['Fname'] ?? '',
-      address: json['address'] ?? '',
-      details: json['details'] ?? '',
-      location: json['location'] ?? '',
-      phone: json['phone'] ?? '',
-    );
-  }
-}
 
 class HomeScreen extends StatefulWidget {
   final String? currentAddress;
@@ -80,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _loadMarkerIcon() async {
     final Uint8List markerIconBytes =
-        await getBytesFromAsset('assets/images/marker_icon.png', 100);
+        await getBytesFromAsset('assets/images/marker_icon.png', 80);
     _markerIcon = BitmapDescriptor.fromBytes(markerIconBytes);
   }
 

@@ -185,13 +185,16 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
             ),
           ),
           FormError(errors: errors),
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: kPrimaryColor,
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12), // <-- Radius
+                side: const BorderSide(color: kPrimaryColor, width: 2),
               ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
             ),
             onPressed: () async {
               // _openMapToSelectLocation();
@@ -221,7 +224,9 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
             child: const Text(
               "Select Location",
               style: TextStyle(
-                color: kTextColor,
+                color: kPrimaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
               ),
             ),
           ),

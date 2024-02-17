@@ -31,11 +31,14 @@ class _AddLocationDetailsState extends State<AddLocationDetails> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(
+                height: 16,
+              ),
               Text(
                 "you Have any location details?  \nThen fill this form and submit the details",
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 30),
               AddLocationDetailsForm(),
             ],
           ),
