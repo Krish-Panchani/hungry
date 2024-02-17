@@ -6,6 +6,7 @@ import 'package:hunger/components/belowAppbar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/Add%20Location/addLocationDetails.dart';
+import 'package:hunger/screens/FoodBank/addFoodBankDetails.dart';
 import 'package:hunger/screens/addFood/addFoodDetails.dart';
 import 'package:hunger/screens/main/screens/home_screen.dart';
 import 'package:hunger/screens/sign_in/sign_in_screen.dart';
@@ -187,7 +188,7 @@ class _InitScreenState extends State<InitScreen> {
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => const AddFoodDetails(),
+                            builder: (context) => const AddFoodBankDetails(),
                           ),
                         );
                       } else {

@@ -154,6 +154,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
           const SizedBox(height: 20),
           TextFormField(
             controller: detialsController,
+            maxLines: 3,
             onSaved: (newValue) => address = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -175,7 +176,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: const CustomSurffixIcon(
-                  svgIcon: "assets/icons/Location point.svg"),
+                  svgIcon: "assets/icons/Chat bubble Icon.svg"),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: const BorderSide(color: kTextColor),

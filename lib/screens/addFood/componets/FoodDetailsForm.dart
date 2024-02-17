@@ -154,6 +154,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
           const SizedBox(height: 25),
           TextFormField(
             controller: detialsController,
+            maxLines: 3,
             onSaved: (newValue) => address = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -171,8 +172,6 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
             decoration: InputDecoration(
               labelText: "Details",
               hintText: "Enter your details",
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 35.0, horizontal: 12.0),
               // If  you are using latest version of flutter then lable text and hint text shown like this
               // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,

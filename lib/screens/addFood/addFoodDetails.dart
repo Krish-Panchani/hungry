@@ -35,7 +35,7 @@ class _AddFoodDetailsState extends State<AddFoodDetails> {
                 height: 16,
               ),
               Text(
-                "Your small help let our App one step close to\nkill hungers",
+                "Your small help let our App one step\nclose to kill hungers",
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 30),
