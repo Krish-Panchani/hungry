@@ -39,6 +39,19 @@ class ContactUsScreen extends StatelessWidget {
                 // Implement functionality to initiate phone call
               },
             ),
+            const SizedBox(height: 24),
+            const Text(
+              'Contact Us',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'If you have any questions, feedback, or suggestions, please feel free to contact us at support@hungryapp.com. We value your input and are committed to continuously improving the Hungry app to better serve our community.',
+              style: TextStyle(fontSize: 16),
+            ),
           ],
         ),
       ),
