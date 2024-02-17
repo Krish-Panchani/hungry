@@ -244,8 +244,13 @@ class _SignFormState extends State<SignForm> {
           const SizedBox(height: 16),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: kPrimaryColor,
-              elevation: 1.0,
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // <-- Radius
+                side: const BorderSide(color: kPrimaryColor, width: 2),
+              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
             ),
             onPressed: () {
               if (_formKey.currentState!.validate()) {
@@ -258,7 +263,11 @@ class _SignFormState extends State<SignForm> {
                 ? const CircularProgressIndicator() // Show loading indicator if isLoading is true
                 : const Text(
                     "Sign In",
-                    style: TextStyle(color: kTextColor),
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                   ),
           ),
         ],

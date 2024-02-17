@@ -13,13 +13,25 @@ import '../../components/socal_card.dart';
 import '../../constants.dart';
 import 'components/sign_up_form.dart';
 
-// ignore: must_be_immutable
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   final String buttonPressed;
+
+  const SignUpScreen({Key? key, required this.buttonPressed}) : super(key: key);
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final ValueNotifier<UserCredential?> userCredential =
       ValueNotifier<UserCredential?>(null);
+  bool _isLoading = false;
 
-  Future<dynamic> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -31,14 +43,21 @@ class SignUpScreen extends StatelessWidget {
         idToken: googleAuth?.idToken,
       );
 
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on Exception catch (e) {
-      // TODO
+      final userCred =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Set the value of userCredential after successful authentication
+      userCredential.value = userCred;
+    } catch (e) {
+      // Handle errors
       print('exception->$e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
-  SignUpScreen({super.key, required this.buttonPressed});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +80,9 @@ class SignUpScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  const SignUpForm(),
+                  SignUpForm(
+                    buttonPressed: widget.buttonPressed,
+                  ),
                   const SizedBox(height: 16),
                   const Row(children: <Widget>[
                     Expanded(child: Divider()),
@@ -72,48 +93,60 @@ class SignUpScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SocalCard(
-                        icon: "assets/icons/google-icon.svg",
-                        press: () async {
-                          await signInWithGoogle();
-                          if (userCredential.value != null) {
-                            print(userCredential.value!.user!.email);
-                            if (buttonPressed == "Submit Remaining Food") {
-                              Navigator.pushReplacement(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => const AddFoodDetails(),
-                                ),
-                              );
-                            } else if (buttonPressed == "Add more Locations") {
-                              Navigator.pushReplacement(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) =>
-                                      const AddLocationDetails(),
-                                ),
-                              );
-                            } else if (buttonPressed ==
-                                "Register Food Center") {
-                              Navigator.pushReplacement(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) =>
-                                      const AddFoodBankDetails(),
-                                ),
-                              );
-                            } else if (buttonPressed == "Login") {
-                              Navigator.pushReplacement(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => const InitScreen(),
-                                ),
-                              );
-                            }
-                          }
-                          print(buttonPressed);
-                        },
-                      ),
+                      _isLoading
+                          ? const CircularProgressIndicator()
+                          : SocalCard(
+                              icon: "assets/icons/google-icon.svg",
+                              press: () async {
+                                await signInWithGoogle();
+                                // Check if userCredential is not null after authentication
+                                if (userCredential.value != null) {
+                                  print(userCredential.value!.user!.email);
+                                  switch (widget.buttonPressed) {
+                                    case "Submit Remaining Food":
+                                      Navigator.pushReplacement(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              const AddFoodDetails(),
+                                        ),
+                                      );
+                                      break;
+                                    case "Add more Locations":
+                                      Navigator.pushReplacement(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              const AddLocationDetails(),
+                                        ),
+                                      );
+                                      break;
+                                    case "Register Food Center":
+                                      Navigator.pushReplacement(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              const AddFoodBankDetails(),
+                                        ),
+                                      );
+                                      break;
+                                    case "Sign In":
+                                      Navigator.pushReplacement(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) =>
+                                              const InitScreen(),
+                                        ),
+                                      );
+                                      break;
+                                    default:
+                                      // Navigate to a default screen if buttonPressed is not recognized
+                                      break;
+                                  }
+                                }
+                                print(widget.buttonPressed);
+                              },
+                            ),
                       // SocalCard(
                       //   icon: "assets/icons/facebook-2.svg",
                       //   press: () {},

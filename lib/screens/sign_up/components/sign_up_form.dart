@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:hunger/screens/sign_in/sign_in_screen.dart';
 
 import '../../../components/custom_surfix_icon.dart';
@@ -10,7 +12,11 @@ import '../../../components/form_error.dart';
 import '../../../constants.dart';
 
 class SignUpForm extends StatefulWidget {
-  const SignUpForm({super.key});
+  final String buttonPressed;
+  const SignUpForm({
+    Key? key,
+    required this.buttonPressed,
+  }) : super(key: key);
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
@@ -21,7 +27,13 @@ class _SignUpFormState extends State<SignUpForm> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController cPasswordController = TextEditingController();
 
+  bool isLoading = false; // Added isLoading state variable
+
   void createAccount() async {
+    setState(() {
+      isLoading = true; // Set isLoading to true when starting authentication
+    });
+
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
     String cPassword = cPasswordController.text.trim();
@@ -31,31 +43,36 @@ class _SignUpFormState extends State<SignUpForm> {
     } else if (password != cPassword) {
       log("Passwords do not match!");
     } else {
-      // create new account
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         log("User created!");
+
         if (userCredential.user != null) {
-          // Navigator.pushNamed(context, HomeScreen());
           Navigator.pushReplacement(
             context,
             CupertinoPageRoute(
               builder: (context) => SignInScreen(
-                buttonPressed: '',
+                buttonPressed: widget.buttonPressed,
               ),
             ),
           );
-          // log(userCredential.credential as String);
+          print(widget.buttonPressed.toString());
         }
       } on FirebaseAuthException catch (e) {
-        // if(e.code == "weak-password"){
-        //   // snakcbar
-        // }
-
         log(e.code.toString());
+      } finally {
+        setState(() {
+          isLoading =
+              false; // Set loading state to false after authentication completes
+        });
       }
     }
+
+    setState(() {
+      isLoading =
+          false; // Set isLoading to false after authentication completes
+    });
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -112,8 +129,6 @@ class _SignUpFormState extends State<SignUpForm> {
             decoration: InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
@@ -149,8 +164,6 @@ class _SignUpFormState extends State<SignUpForm> {
             decoration: InputDecoration(
               labelText: "Password",
               hintText: "Enter your password",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   const CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
@@ -186,8 +199,6 @@ class _SignUpFormState extends State<SignUpForm> {
             decoration: InputDecoration(
               labelText: "Confirm Password",
               hintText: "Re-enter your password",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   const CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
@@ -201,20 +212,32 @@ class _SignUpFormState extends State<SignUpForm> {
           const SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: kPrimaryColor,
-              elevation: 1.0,
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // <-- Radius
+                side: const BorderSide(color: kPrimaryColor, width: 2),
+              ),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
             ),
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                createAccount();
-              }
-            },
-            child: const Text(
-              "Sign Up",
-              style: TextStyle(color: kTextColor),
-            ),
+            onPressed: isLoading
+                ? null // Disable button when isLoading is true
+                : () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      createAccount();
+                    }
+                  },
+            child: isLoading
+                ? const CircularProgressIndicator() // Show loading indicator if isLoading is true
+                : const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
           ),
         ],
       ),
