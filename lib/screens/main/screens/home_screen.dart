@@ -128,6 +128,38 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {}); // Refresh the UI
       }
     });
+
+    _databaseRef = FirebaseDatabase.instance.ref().child('FoodBanks');
+    _userDataSubscription = _databaseRef.onValue.listen((event) {
+      if (event.snapshot.value != null) {
+        _userDataList.clear();
+        // Assuming event.snapshot.value is a Map<String, dynamic>
+        Map<dynamic, dynamic>? usersDataMap = event.snapshot.value as Map?;
+        usersDataMap?.forEach((userId, userData) {
+          // Assuming userData is a Map<String, dynamic> representing user data
+          Map<dynamic, dynamic>? userDataMap = userData as Map?;
+          if (userDataMap != null) {
+            userDataMap.forEach((id, data) {
+              _userDataList.add(UserData.fromJson(data));
+              log('User Data: ${data as Map}');
+              _markers.add(Marker(
+                markerId: MarkerId(id.toString()),
+                position: LatLng(
+                  double.parse(data['location'].toString().split(',')[0]),
+                  double.parse(data['location'].toString().split(',')[1]),
+                ),
+                infoWindow: InfoWindow(
+                  title: data['Fname'],
+                  snippet: data['address'],
+                ),
+                icon: _markerIcon,
+              ));
+            });
+          }
+        });
+        setState(() {}); // Refresh the UI
+      }
+    });
   }
 
   void _onMapTypeButtonPressed() {
