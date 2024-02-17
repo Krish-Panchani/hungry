@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,20 +30,25 @@ class SignForm extends StatefulWidget {
 class _SignFormState extends State<SignForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isLoading = false; // Added for tracking loading state
 
   void login() async {
+    setState(() {
+      isLoading = true; // Set loading state to true while authenticating
+    });
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
     if (email == "" || password == "") {
       log("Please fill all the fields!");
+      setState(() {
+        isLoading = false; // Set loading state to false if validation fails
+      });
     } else {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
-          // Navigator.popUntil(context, (route) => route.isFirst);
-          // Navigator.pushNamed(context, LoginSuccessScreen.routeName);
           if (widget.buttonPressed == "Submit Remaining Food") {
             var userDoc = await FirebaseFirestore.instance
                 .collection('users')
@@ -65,13 +69,6 @@ class _SignFormState extends State<SignForm> {
                 ),
               );
             }
-
-            // Navigator.pushReplacement(
-            //   context,
-            //   CupertinoPageRoute(
-            //     builder: (context) => const AddFoodDetails(),
-            //   ),
-            // );
           } else if (widget.buttonPressed == "Add more Locations") {
             var locDoc = await FirebaseFirestore.instance
                 .collection('locations')
@@ -92,12 +89,6 @@ class _SignFormState extends State<SignForm> {
                 ),
               );
             }
-            // Navigator.pushReplacement(
-            //   context,
-            //   CupertinoPageRoute(
-            //     builder: (context) => const AddLocationDetails(),
-            //   ),
-            // );
           } else if (widget.buttonPressed == "Register Food Center") {
             var locDoc = await FirebaseFirestore.instance
                 .collection('locations')
@@ -118,23 +109,16 @@ class _SignFormState extends State<SignForm> {
                 ),
               );
             }
-            // Navigator.pushReplacement(
-            //   context,
-            //   CupertinoPageRoute(
-            //     builder: (context) => const AddLocationDetails(),
-            //   ),
-            // );
           }
           print(widget.buttonPressed.toString());
-          // Navigator.pushReplacement(
-          //   context,
-          //   CupertinoPageRoute(
-          //     builder: (context) => const AddFoodDetails(),
-          //   ),
-          // );
         }
       } on FirebaseAuthException catch (e) {
         log(e.code.toString());
+      } finally {
+        setState(() {
+          isLoading =
+              false; // Set loading state to false after authentication completes
+        });
       }
     }
   }
@@ -192,9 +176,6 @@ class _SignFormState extends State<SignForm> {
             decoration: InputDecoration(
               labelText: "Email",
               hintText: "Enter your email",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
-              // floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
               border: OutlineInputBorder(
@@ -229,9 +210,6 @@ class _SignFormState extends State<SignForm> {
             decoration: InputDecoration(
               labelText: "Password",
               hintText: "Enter your password",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
-              // floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   const CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
               border: OutlineInputBorder(
@@ -255,8 +233,6 @@ class _SignFormState extends State<SignForm> {
               const Text("Remember me"),
               const Spacer(),
               GestureDetector(
-                // onTap: () => Navigator.pushNamed(
-                // context, ForgotPasswordScreen.routeName),
                 child: const Text(
                   "Forgot Password?",
                   style: TextStyle(decoration: TextDecoration.underline),
@@ -278,10 +254,12 @@ class _SignFormState extends State<SignForm> {
                 login();
               }
             },
-            child: const Text(
-              "Sign In",
-              style: TextStyle(color: kTextColor),
-            ),
+            child: isLoading
+                ? const CircularProgressIndicator() // Show loading indicator if isLoading is true
+                : const Text(
+                    "Sign In",
+                    style: TextStyle(color: kTextColor),
+                  ),
           ),
         ],
       ),
