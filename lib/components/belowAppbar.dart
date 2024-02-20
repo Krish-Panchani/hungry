@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:hunger/constants.dart';
+import 'package:hunger/screens/main/screens/componets/searchScreen.dart';
 
 class AddressBox extends StatefulWidget {
   final String initialAddress;
@@ -115,13 +116,23 @@ class _AddressBoxState extends State<AddressBox> {
                           color: kSecondaryColor,
                         )
                       else if (_currentPosition != null)
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            _currentAddress!,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SearchScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              _currentAddress!,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),

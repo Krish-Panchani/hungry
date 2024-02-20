@@ -5,7 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hunger/screens/addFood/FoodDetailsScreen.dart';
+import 'package:hunger/screens/addFood/confirmationScreen.dart';
 import 'package:hunger/screens/addFood/mapScreen.dart';
 import 'package:uuid/uuid.dart';
 
@@ -216,7 +216,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
 
                 // If a location is selected on the map screen, save the data to Firestore
                 if (location != null) {
-                  saveDataToRealtimeDatabase(location);
+                  saveDataAndNavigate(location);
                 }
               }
             },
@@ -255,7 +255,21 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
     }
   }
 
-  void saveDataToRealtimeDatabase(LatLng location) async {
+  Future<void> saveDataAndNavigate(LatLng location) async {
+    try {
+      // Save data to Firebase
+      String id = const Uuid().v4();
+      await saveDataToRealtimeDatabase(location, id);
+
+      // Navigate to next screen with all the data
+      navigateToConfirmationScreen(location, id);
+    } catch (error) {
+      // Handle error
+      print("Error saving data: $error");
+    }
+  }
+
+  Future<void> saveDataToRealtimeDatabase(LatLng location, String id) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -267,33 +281,33 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
 
-      String id = const Uuid().v4(); // Generate a unique ID using Uuid package
-
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
-      // Create a new child node under 'users' with the generated ID
-      databaseReference.child('users').child(userId).child(id).set({
+      await databaseReference.child('users').child(userId).child(id).set({
         "Fname": Fname,
         "phone": phone,
         "address": address,
         "details": details,
         "location": selectedLocationString,
-      }).then((_) {
-        // Data saved successfully
-        log("User data saved to Realtime Database");
-
-        // Navigate to FoodDetailsScreen
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => const FoodDetailsScreen(),
-          ),
-        );
-      }).catchError((error) {
-        // Handle error
-        print("Error saving data: $error");
-        // You can provide feedback to the user or perform other actions here
       });
+
+      log("User data saved to Realtime Database");
     }
+  }
+
+  void navigateToConfirmationScreen(LatLng location, String id) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => FoodConfirmationDetails(
+          firstName: FnameController.text.trim(),
+          phoneNumber: PhoneController.text.trim(),
+          address: addressController.text.trim(),
+          details: detialsController.text.trim(),
+          location: location,
+          id: id,
+        ),
+      ),
+    );
   }
 }

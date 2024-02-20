@@ -14,7 +14,7 @@ import '../../../components/form_error.dart';
 import '../../../constants.dart';
 
 class AddLocationDetailsForm extends StatefulWidget {
-  const AddLocationDetailsForm({super.key});
+  const AddLocationDetailsForm({Key? key}) : super(key: key);
 
   @override
   State<AddLocationDetailsForm> createState() => _AddLocationDetailsFormState();
@@ -35,6 +35,8 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
   String? phoneNumber;
   String? address;
   String? details;
+
+  bool _isLoading = false;
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -77,8 +79,6 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
             decoration: InputDecoration(
               labelText: "Full Name",
               hintText: "Enter your full name",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
@@ -109,8 +109,6 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
             decoration: InputDecoration(
               labelText: "Phone Number",
               hintText: "Enter your phone number",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon:
                   const CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
@@ -140,8 +138,6 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
             decoration: InputDecoration(
               labelText: "Address",
               hintText: "Enter your address",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: const CustomSurffixIcon(
                   svgIcon: "assets/icons/Location point.svg"),
@@ -172,8 +168,6 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
             decoration: InputDecoration(
               labelText: "Details",
               hintText: "Enter your details",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: const CustomSurffixIcon(
                   svgIcon: "assets/icons/Chat bubble Icon.svg"),
@@ -189,35 +183,18 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // <-- Radius
+                borderRadius: BorderRadius.circular(12),
                 side: const BorderSide(color: kPrimaryColor, width: 2),
               ),
               padding:
                   const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
             ),
             onPressed: () async {
-              // _openMapToSelectLocation();
               if (_formKey.currentState!.validate()) {
-                // Save the form data
                 _formKey.currentState!.save();
-
-                // Navigate to the map screen to select a location
-                LatLng? location = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MapScreen2(
-                      firstName: FnameController.text.trim(),
-                      phoneNumber: PhoneController.text.trim(),
-                      address: addressController.text.trim(),
-                      details: detialsController.text.trim(),
-                    ),
-                  ),
-                );
-
-                // If a location is selected on the map screen, save the data to Firestore
-                if (location != null) {
-                  saveDataToRealtimeDatabase(location);
-                }
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : _navigateToMapScreen();
               }
             },
             child: const Text(
@@ -234,28 +211,39 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
     );
   }
 
-  void _openMapToSelectLocation() async {
-    // Navigate to map screen where user can select location
+  void _navigateToMapScreen() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     LatLng? location = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MapScreen2(
-          firstName: '',
-          phoneNumber: '',
-          details: '',
-          address: '',
+        builder: (context) => MapScreen2(
+          firstName: FnameController.text.trim(),
+          phoneNumber: PhoneController.text.trim(),
+          address: addressController.text.trim(),
+          details: detialsController.text.trim(),
         ),
       ),
     );
 
     if (location != null) {
-      setState(() {
-        selectedLocation = location;
-      });
+      _isLoading
+          ? const CircularProgressIndicator()
+          : saveDataToRealtimeDatabase(location);
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void saveDataToRealtimeDatabase(LatLng location) async {
+    setState(() {
+      _isLoading = true;
+    });
+
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -267,11 +255,10 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
 
-      String id = const Uuid().v4(); // Generate a unique ID using Uuid package
+      String id = const Uuid().v4();
 
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
-      // Create a new child node under 'users' with the generated ID
       databaseReference.child('locations').child(userId).child(id).set({
         "Fname": Fname,
         "phone": phone,
@@ -279,10 +266,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
         "details": details,
         "location": selectedLocationString,
       }).then((_) {
-        // Data saved successfully
         log("Location data saved to Realtime Database");
-
-        // Navigate to FoodDetailsScreen
         Navigator.push(
           context,
           CupertinoPageRoute(
@@ -290,10 +274,12 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
           ),
         );
       }).catchError((error) {
-        // Handle error
         print("Error saving data: $error");
-        // You can provide feedback to the user or perform other actions here
       });
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

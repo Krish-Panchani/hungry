@@ -37,6 +37,8 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
   String? address;
   String? details;
 
+  bool _isLoading = false;
+
   void addError({String? error}) {
     if (!errors.contains(error)) {
       setState(() {
@@ -217,7 +219,9 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
 
                 // If a location is selected on the map screen, save the data to Firestore
                 if (location != null) {
-                  saveDataToRealtimeDatabase(location);
+                  _isLoading
+                      ? const CircularProgressIndicator()
+                      : saveDataToRealtimeDatabase(location);
                 }
               }
             },
@@ -236,6 +240,9 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
   }
 
   void _openMapToSelectLocation() async {
+    setState(() {
+      _isLoading = true;
+    });
     // Navigate to map screen where user can select location
     LatLng? location = await Navigator.push(
       context,
@@ -254,9 +261,15 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
         selectedLocation = location;
       });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void saveDataToRealtimeDatabase(LatLng location) async {
+    setState(() {
+      _isLoading = true;
+    });
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -296,5 +309,8 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
         // You can provide feedback to the user or perform other actions here
       });
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }
