@@ -325,17 +325,26 @@ class _BottomSliderState extends State<BottomSlider> {
           highlightColor: Colors.grey[100]!,
           child: ListTile(
             leading: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
               width: 50.0,
               height: 50.0,
-              color: Colors.white,
             ),
             title: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
               height: 15.0,
-              color: Colors.white,
             ),
             subtitle: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
               height: 15.0,
-              color: Colors.white,
             ),
           ),
         );

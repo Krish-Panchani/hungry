@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/main/screens/componets/searchScreen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AddressBox extends StatefulWidget {
   final String initialAddress;
@@ -112,8 +113,34 @@ class _AddressBoxState extends State<AddressBox> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (_isLoading)
-                        const CircularProgressIndicator(
-                          color: kSecondaryColor,
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                width: 100.0,
+                                height: 15.0,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                width: double.infinity - 200,
+                                height: 15.0,
+                              ),
+                            ],
+                          ),
                         )
                       else if (_currentPosition != null)
                         InkWell(
