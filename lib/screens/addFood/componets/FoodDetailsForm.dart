@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hunger/constants/customElevatedButton.dart';
+import 'package:hunger/constants/customTextField.dart';
 import 'package:hunger/screens/addFood/confirmationScreen.dart';
 import 'package:hunger/screens/addFood/mapScreen.dart';
 import 'package:uuid/uuid.dart';
@@ -58,145 +60,104 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
       key: _formKey,
       child: Column(
         children: [
-          TextFormField(
+          CustomTextField(
             controller: FnameController,
+            labelText: "Full Name",
+            hintText: "Enter your full name",
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             onSaved: (newValue) => firstName = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kNamelNullError);
               }
-              return;
             },
+            errorText:
+                errors.contains(kNamelNullError) ? kNamelNullError : null,
             validator: (value) {
               if (value!.isEmpty) {
                 addError(error: kNamelNullError);
-                return "";
+                return kNamelNullError;
               }
               return null;
             },
-            decoration: InputDecoration(
-              labelText: "Full Name",
-              hintText: "Enter your full name",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon:
-                  const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: kTextColor),
-              ),
-            ),
           ),
           const SizedBox(height: 25),
-          TextFormField(
+          CustomTextField(
             controller: PhoneController,
-            keyboardType: TextInputType.phone,
+            labelText: "Phone Number",
+            hintText: "Enter your phone number",
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+            errorText: errors.contains(kPhoneNumberNullError)
+                ? kPhoneNumberNullError
+                : null,
             onSaved: (newValue) => phoneNumber = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kPhoneNumberNullError);
               }
-              return;
             },
             validator: (value) {
               if (value!.isEmpty) {
                 addError(error: kPhoneNumberNullError);
-                return "";
+                return kPhoneNumberNullError;
               }
               return null;
             },
-            decoration: InputDecoration(
-              labelText: "Phone Number",
-              hintText: "Enter your phone number",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon:
-                  const CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: kTextColor),
-              ),
-            ),
           ),
           const SizedBox(height: 25),
-          TextFormField(
+          CustomTextField(
             controller: addressController,
+            labelText: "Address",
+            hintText: "Enter your Address",
+            suffixIcon: const CustomSurffixIcon(
+                svgIcon: "assets/icons/Location point.svg"),
+            errorText:
+                errors.contains(kAddressNullError) ? kAddressNullError : null,
             onSaved: (newValue) => address = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kAddressNullError);
               }
-              return;
             },
             validator: (value) {
               if (value!.isEmpty) {
                 addError(error: kAddressNullError);
-                return "";
+                return kAddressNullError;
               }
               return null;
             },
-            decoration: InputDecoration(
-              labelText: "Address",
-              hintText: "Enter your address",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: const CustomSurffixIcon(
-                  svgIcon: "assets/icons/Location point.svg"),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: kTextColor),
-              ),
-            ),
           ),
           const SizedBox(height: 25),
-          TextFormField(
+          CustomTextField(
             controller: detialsController,
             maxLines: 3,
-            onSaved: (newValue) => address = newValue,
+            labelText: "Details",
+            hintText: "Enter your Details",
+            suffixIcon: const CustomSurffixIcon(
+                svgIcon: "assets/icons/Location point.svg"),
+            errorText:
+                errors.contains(kDetailsNullError) ? kDetailsNullError : null,
+            onSaved: (newValue) => details = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 removeError(error: kDetailsNullError);
               }
-              return;
             },
             validator: (value) {
               if (value!.isEmpty) {
                 addError(error: kDetailsNullError);
-                return "";
+                return kDetailsNullError;
               }
               return null;
             },
-            decoration: InputDecoration(
-              labelText: "Details",
-              hintText: "Enter your details",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: const CustomSurffixIcon(
-                  svgIcon: "assets/icons/Chat bubble Icon.svg"),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: kTextColor),
-              ),
-            ),
           ),
+          const SizedBox(height: 10),
           FormError(errors: errors),
           const SizedBox(height: 50),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // <-- Radius
-                side: const BorderSide(color: kPrimaryColor, width: 2),
-              ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-            ),
+          CustomElevatedButton(
             onPressed: () async {
-              // _openMapToSelectLocation();
               if (_formKey.currentState!.validate()) {
                 // Save the form data
                 _formKey.currentState!.save();
@@ -220,14 +181,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
                 }
               }
             },
-            child: const Text(
-              "Select Location",
-              style: TextStyle(
-                color: kPrimaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-            ),
+            text: "Select Location",
           ),
         ],
       ),
