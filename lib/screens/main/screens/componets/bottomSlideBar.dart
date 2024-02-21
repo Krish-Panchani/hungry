@@ -11,6 +11,17 @@ import 'dart:math' show cos, sqrt, asin;
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// Function to calculate the distance between two points using Haversine formula
+double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  const p = 0.017453292519943295;
+  var a = 0.5 -
+      cos((lat2 - lat1) * p) / 2 +
+      cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+  return 12742 * asin(sqrt(a)); // 2 * R; R = 6371 km
+}
+
+// Existing imports remain unchanged
+
 class BottomSlider extends StatefulWidget {
   const BottomSlider({Key? key}) : super(key: key);
 
@@ -20,12 +31,14 @@ class BottomSlider extends StatefulWidget {
 
 class _BottomSliderState extends State<BottomSlider> {
   final PanelController _panelController = PanelController();
+
   bool _isLoading = true;
   late bool _showSeeAll = true;
   late double? userLat;
   late double? userLon;
   late DatabaseReference _locationsRef;
   late DatabaseReference _foodBanksRef;
+  late StreamSubscription<dynamic> _userDataSubscription;
   List<UserData> _userDataList = [];
 
   @override
@@ -36,78 +49,68 @@ class _BottomSliderState extends State<BottomSlider> {
   }
 
   Future<void> _getUserLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      setState(() {
-        userLat = position.latitude;
-        userLon = position.longitude;
-      });
-    } catch (e) {
-      print('Error fetching user location: $e');
-    }
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      userLat = position.latitude;
+      userLon = position.longitude;
+    });
   }
 
   void _fetchUserData() {
     _locationsRef = FirebaseDatabase.instance.ref().child('locations');
     _foodBanksRef = FirebaseDatabase.instance.ref().child('FoodBanks');
 
-    // Fetch data from the 'locations' collection
-    _locationsRef.onValue.listen((event) {
+    _userDataSubscription = _locationsRef.onValue.listen((event) {
       _processData(event.snapshot.value, 'location');
     });
 
-    // Fetch data from the 'FoodBanks' collection
-    _foodBanksRef.onValue.listen((event) {
+    _userDataSubscription = _foodBanksRef.onValue.listen((event) {
       _processData(event.snapshot.value, 'foodBank');
     });
   }
 
   void _processData(dynamic data, String type) {
     if (data != null) {
-      List<UserData> tempList = [];
-
       Map<dynamic, dynamic>? usersDataMap = data as Map?;
       usersDataMap?.forEach((userId, userData) {
         Map<dynamic, dynamic>? userDataMap = userData as Map?;
         if (userDataMap != null) {
           userDataMap.forEach((id, data) {
-            tempList.add(UserData.fromJson(data));
+            _userDataList.add(UserData.fromJson(data));
           });
         }
       });
 
-      // Filter and sort data
-      if (userLat != null && userLon != null) {
-        tempList = tempList.where((userData) {
-          double locationLat = double.parse(userData.location.split(',')[0]);
-          double locationLon = double.parse(userData.location.split(',')[1]);
-          double distance =
-              calculateDistance(userLat!, userLon!, locationLat, locationLon);
-          return distance < 20.0;
-        }).toList();
+      _getUserLocation().then((_) {
+        if (userLat != null && userLon != null) {
+          _userDataList = _userDataList.where((userData) {
+            double locationLat = double.parse(userData.location.split(',')[0]);
+            double locationLon = double.parse(userData.location.split(',')[1]);
+            double distance =
+                calculateDistance(userLat!, userLon!, locationLat, locationLon);
+            return distance < 20.0;
+          }).toList();
 
-        tempList.sort((a, b) {
-          double locationLatA = double.parse(a.location.split(',')[0]);
-          double locationLonA = double.parse(a.location.split(',')[1]);
-          double distanceA =
-              calculateDistance(userLat!, userLon!, locationLatA, locationLonA);
+          // Sort distances after filtering
+          _userDataList.sort((a, b) {
+            double locationLatA = double.parse(a.location.split(',')[0]);
+            double locationLonA = double.parse(a.location.split(',')[1]);
+            double distanceA = calculateDistance(
+                userLat!, userLon!, locationLatA, locationLonA);
 
-          double locationLatB = double.parse(b.location.split(',')[0]);
-          double locationLonB = double.parse(b.location.split(',')[1]);
-          double distanceB =
-              calculateDistance(userLat!, userLon!, locationLatB, locationLonB);
+            double locationLatB = double.parse(b.location.split(',')[0]);
+            double locationLonB = double.parse(b.location.split(',')[1]);
+            double distanceB = calculateDistance(
+                userLat!, userLon!, locationLatB, locationLonB);
 
-          return distanceA.compareTo(distanceB);
-        });
-      }
+            return distanceA.compareTo(distanceB);
+          });
 
-      // Add data from both collections to the main list
-      _userDataList.addAll(tempList);
-
-      setState(() {
-        _isLoading = false;
+          setState(() {
+            _isLoading = false;
+          });
+        }
       });
     }
   }
@@ -274,6 +277,9 @@ class _BottomSliderState extends State<BottomSlider> {
                                           backgroundColor: kPrimaryColor,
                                         ),
                                         onPressed: () {
+                                          // setState(() {
+                                          //   _showSeeAll = true;
+                                          // });
                                           _panelController.close();
                                           print(
                                               'Directions pressed for ${userData.fname}');
@@ -360,15 +366,7 @@ class _BottomSliderState extends State<BottomSlider> {
 
   @override
   void dispose() {
+    _userDataSubscription.cancel();
     super.dispose();
   }
-}
-
-// Function to calculate the distance between two points using Haversine formula
-double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-  const p = 0.017453292519943295;
-  var a = 0.5 -
-      cos((lat2 - lat1) * p) / 2 +
-      cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
-  return 12742 * asin(sqrt(a)); // 2 * R; R = 6371 km
 }
