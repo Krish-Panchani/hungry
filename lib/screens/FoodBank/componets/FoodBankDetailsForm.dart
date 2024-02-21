@@ -5,7 +5,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hunger/screens/Add%20Location/mapScreen2.dart';
 import 'package:hunger/screens/FoodBank/FoodBankDetails.dart';
 import 'package:hunger/screens/FoodBank/mapScreen3.dart';
 import 'package:uuid/uuid.dart';
@@ -237,40 +236,44 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
     );
   }
 
-  void _openMapToSelectLocation() async {
+  void _navigateToMapScreen() async {
     setState(() {
       _isLoading = true;
     });
-    // Navigate to map screen where user can select location
+
     LatLng? location = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MapScreen2(
-          firstName: '',
-          phoneNumber: '',
-          details: '',
-          address: '',
+        builder: (context) => MapScreen3(
+          firstName: FnameController.text.trim(),
+          phoneNumber: PhoneController.text.trim(),
+          address: addressController.text.trim(),
+          details: detialsController.text.trim(),
         ),
       ),
     );
 
     if (location != null) {
+      saveDataToRealtimeDatabase(location);
+    } else {
       setState(() {
-        selectedLocation = location;
+        _isLoading = false;
       });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void saveDataToRealtimeDatabase(LatLng location) async {
-    setState(() {
-      _isLoading = true;
-    });
-    User? user = FirebaseAuth.instance.currentUser;
+    try {
+      setState(() {
+        _isLoading = true;
+      });
 
-    if (user != null) {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        throw Exception("User not authenticated");
+      }
+
       String userId = user.uid;
       String Fname = FnameController.text.trim();
       String phone = PhoneController.text.trim();
@@ -279,36 +282,33 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
 
-      String id = const Uuid().v4(); // Generate a unique ID using Uuid package
+      String id = const Uuid().v4();
 
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
-      // Create a new child node under 'users' with the generated ID
-      databaseReference.child('FoodBanks').child(userId).child(id).set({
+      await databaseReference.child('FoodBanks').child(userId).child(id).set({
         "Fname": Fname,
         "phone": phone,
         "address": address,
         "details": details,
         "location": selectedLocationString,
-      }).then((_) {
-        // Data saved successfully
-        log(" data saved to Realtime Database");
+      });
 
-        // NavigatFoodBanke to FoodDetailsScreen
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => const FoodBankDetailsScreen(),
-          ),
-        );
-      }).catchError((error) {
-        // Handle error
-        print("Error saving data: $error");
-        // You can provide feedback to the user or perform other actions here
+      log("Food Bank data saved to Realtime Database");
+
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const FoodBankDetailsScreen(),
+        ),
+      );
+    } catch (error) {
+      print("Error saving data: $error");
+      // Handle error appropriately, show error message to the user, etc.
+    } finally {
+      setState(() {
+        _isLoading = false;
       });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 }

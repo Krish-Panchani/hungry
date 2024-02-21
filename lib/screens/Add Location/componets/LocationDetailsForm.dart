@@ -192,9 +192,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                _isLoading
-                    ? const CircularProgressIndicator()
-                    : _navigateToMapScreen();
+                _navigateToMapScreen();
               }
             },
             child: const Text(
