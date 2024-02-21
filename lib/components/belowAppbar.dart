@@ -1,14 +1,15 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/main/screens/componets/searchScreen.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressBox extends StatefulWidget {
   final String initialAddress;
+
   const AddressBox({
     Key? key,
     required this.initialAddress,
@@ -21,42 +22,13 @@ class AddressBox extends StatefulWidget {
 class _AddressBoxState extends State<AddressBox> {
   Position? _currentPosition;
   String? _currentAddress;
-
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _getLocationPermission();
+    _loadCachedAddress();
     _getCurrentLocation();
-    _currentAddress = widget.initialAddress;
-  }
-
-  Future<void> _getLocationPermission() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      // Show a snackbar to inform the user about the importance of location permission
-      final snackBar = SnackBar(
-        content: const Text('Location permission is mandatory for this app.'),
-        action: SnackBarAction(
-          label: 'Grant',
-          onPressed: () async {
-            permission = await Geolocator.requestPermission();
-            if (permission == LocationPermission.denied) {
-              _getLocationPermission();
-            } else {
-              // User granted permission, proceed to get location
-              _getCurrentLocation();
-            }
-          },
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else {
-      // Location permission is already granted, proceed to get location
-      _getCurrentLocation();
-    }
   }
 
   Future<void> _getCurrentLocation() async {
@@ -79,6 +51,9 @@ class _AddressBoxState extends State<AddressBox> {
             "${placemark.subAdministrativeArea}"
             "${placemark.country}, "
             "${placemark.postalCode}";
+
+        // Cache the current address
+        _cacheAddress(_currentAddress!);
       } else {
         _currentAddress = "Address not found";
       }
@@ -91,6 +66,21 @@ class _AddressBoxState extends State<AddressBox> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> _loadCachedAddress() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cachedAddress = prefs.getString('cachedAddress');
+    if (cachedAddress != null) {
+      setState(() {
+        _currentAddress = cachedAddress;
+      });
+    }
+  }
+
+  Future<void> _cacheAddress(String address) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('cachedAddress', address);
   }
 
   @override
