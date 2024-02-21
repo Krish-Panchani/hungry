@@ -26,7 +26,13 @@ class ContactUsScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.email),
               title: const Text('Email'),
-              subtitle: const Text('support@hungryapp.com'),
+              subtitle: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('krishpanchani1346@gmail.com'),
+                  Text('vsutariya428@gmail.com'),
+                ],
+              ),
               onTap: () {
                 // Implement functionality to open email app with pre-filled email
               },
@@ -34,7 +40,13 @@ class ContactUsScreen extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.phone),
               title: const Text('Phone Number'),
-              subtitle: const Text('+1 (123) 456-7890'),
+              subtitle: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('+91 8866799347'),
+                  Text('+91 9904295257'),
+                ],
+              ),
               onTap: () {
                 // Implement functionality to initiate phone call
               },
