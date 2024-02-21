@@ -33,7 +33,7 @@ class _BottomSliderState extends State<BottomSlider> {
   final PanelController _panelController = PanelController();
 
   bool _isLoading = true;
-  late bool? _showSeeAll = true;
+  late bool _showSeeAll = true;
   late double? userLat;
   late double? userLon;
   late DatabaseReference _locationsRef;
@@ -121,7 +121,7 @@ class _BottomSliderState extends State<BottomSlider> {
       backdropEnabled: true,
       borderRadius: BorderRadius.circular(24.0),
       controller: _panelController,
-      minHeight: _showSeeAll! ? 200 : 60,
+      minHeight: _showSeeAll ? 200 : 60,
       panel: buildPanel(),
       isDraggable: true,
       parallaxEnabled: true,
@@ -188,7 +188,9 @@ class _BottomSliderState extends State<BottomSlider> {
             child: _isLoading
                 ? _buildShimmerList()
                 : _userDataList.isEmpty
-                    ? const Center(child: Text('No data available'))
+                    ? const Center(
+                        child: Text('No data available'),
+                      )
                     : ListView.builder(
                         itemCount: _userDataList.length,
                         itemBuilder: (context, index) {

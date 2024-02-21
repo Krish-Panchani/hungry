@@ -219,9 +219,7 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
 
                 // If a location is selected on the map screen, save the data to Firestore
                 if (location != null) {
-                  _isLoading
-                      ? const CircularProgressIndicator()
-                      : saveDataToRealtimeDatabase(location);
+                  saveDataToRealtimeDatabase(location);
                 }
               }
             },

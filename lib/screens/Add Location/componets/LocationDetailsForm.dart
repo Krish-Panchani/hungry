@@ -229,24 +229,26 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
     );
 
     if (location != null) {
-      _isLoading
-          ? const CircularProgressIndicator()
-          : saveDataToRealtimeDatabase(location);
+      saveDataToRealtimeDatabase(location);
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void saveDataToRealtimeDatabase(LatLng location) async {
-    setState(() {
-      _isLoading = true;
-    });
+    try {
+      setState(() {
+        _isLoading = true;
+      });
 
-    User? user = FirebaseAuth.instance.currentUser;
+      User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
+      if (user == null) {
+        throw Exception("User not authenticated");
+      }
+
       String userId = user.uid;
       String Fname = FnameController.text.trim();
       String phone = PhoneController.text.trim();
@@ -259,27 +261,29 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
 
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
-      databaseReference.child('locations').child(userId).child(id).set({
+      await databaseReference.child('locations').child(userId).child(id).set({
         "Fname": Fname,
         "phone": phone,
         "address": address,
         "details": details,
         "location": selectedLocationString,
-      }).then((_) {
-        log("Location data saved to Realtime Database");
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => const LocationDetailsScreen(),
-          ),
-        );
-      }).catchError((error) {
-        print("Error saving data: $error");
+      });
+
+      log("Location data saved to Realtime Database");
+
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const LocationDetailsScreen(),
+        ),
+      );
+    } catch (error) {
+      print("Error saving data: $error");
+      // Handle error appropriately, show error message to the user, etc.
+    } finally {
+      setState(() {
+        _isLoading = false;
       });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 }
