@@ -65,12 +65,8 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Feedback'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const HomeScreen(),
-              //   ),
-              // );
+              // Send an email to the developer
+              // using the email_launcher package
             },
           ),
           if (showLogOut) // Conditionally show the LogOut list tile
