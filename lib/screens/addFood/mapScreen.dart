@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/constants.dart';
 
 class MapScreen extends StatefulWidget {
@@ -63,26 +64,10 @@ class _MapScreenState extends State<MapScreen> {
           ),
           Positioned(
             bottom: 16,
-            right: 90,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // <-- Radius
-                  side: const BorderSide(color: kPrimaryColor, width: 2),
-                ),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 25.0, vertical: 10.0),
-              ),
+            right: 80,
+            child: CustomElevatedButton(
               onPressed: _selectCurrentLocation,
-              child: const Text(
-                'Select Current Location',
-                style: TextStyle(
-                  color: kPrimaryColor,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 15,
-                ),
-              ),
+              text: "Select Current Location",
             ),
           ),
         ],
