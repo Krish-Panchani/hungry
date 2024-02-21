@@ -142,7 +142,7 @@ class _AddressBoxState extends State<AddressBox> {
                             ],
                           ),
                         )
-                      else if (_currentPosition != null)
+                      else
                         InkWell(
                           onTap: () {
                             Navigator.push(

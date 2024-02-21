@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hunger/components/custom_surfix_icon.dart';
 import 'package:hunger/constants.dart';
 
 class CustomTextField extends StatelessWidget {
