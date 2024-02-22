@@ -3,6 +3,8 @@
 # "Hungry" - Free Food Finder
 <p>Hungry? No Need! Our mobile app leverages Google Cloud, Firebase, and Flutter to fight hunger! We map nearby free food locations like pantries, shelters, and community kitchens, empowering users to find immediate meals and connecting them with valuable resources. Join us to build a hunger-free future, one tap at a time!</p>
 
+<p>The app "Hungry" solves the problem of finding nearby free food locations and reducing food waste by providing a platform for individuals and businesses to donate excess food. Users can easily search for available food options in their area and connect with organizations or individuals who have food to share.</p>
+
 ## 🛠️ Technologies Used
 
 The Hunger App is built using the following technologies:
