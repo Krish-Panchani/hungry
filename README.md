@@ -1,8 +1,8 @@
 ## 🚀 Introduction
 
-# Food Finder
+## Food Finder
 <br>
-<p></t>Hungry? No Need! Our mobile app leverages Google Cloud, Firebase, and Flutter to fight hunger! We map nearby free food locations like pantries, shelters, and community kitchens, empowering users to find immediate meals and connecting them with valuable resources. Join us to build a hunger-free future, one tap at a time!</p>
+<p>Hungry? No Need! Our mobile app leverages Google Cloud, Firebase, and Flutter to fight hunger! We map nearby free food locations like pantries, shelters, and community kitchens, empowering users to find immediate meals and connecting them with valuable resources. Join us to build a hunger-free future, one tap at a time!</p>
 
 ## 🛠️ Technologies Used
 
@@ -10,7 +10,8 @@ The Hunger App is built using the following technologies:
 
 - Flutter SDK
 - Dart programming language
-- Flutter packages for Google Map
+- Firebase 
+- Flutter packages for Google Map and other Functionalities
 
 
 
