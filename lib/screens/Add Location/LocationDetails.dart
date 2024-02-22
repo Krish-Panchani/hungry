@@ -86,7 +86,8 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                             text: TextSpan(
                               children: [
                                 const TextSpan(
-                                    text: 'Name: ', style: kTextStyleB),
+                                    text: 'Location Name: ',
+                                    style: kTextStyleB),
                                 TextSpan(
                                     text: userData.fname, style: kTextStyleN),
                               ],
@@ -97,7 +98,8 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                             text: TextSpan(
                               children: [
                                 const TextSpan(
-                                    text: 'Address: ', style: kTextStyleB),
+                                    text: 'Location Address: ',
+                                    style: kTextStyleB),
                                 TextSpan(
                                     text: userData.address, style: kTextStyleN),
                               ],

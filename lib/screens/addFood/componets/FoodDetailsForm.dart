@@ -133,8 +133,8 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
           CustomTextField(
             controller: detialsController,
             maxLines: 3,
-            labelText: "Details",
-            hintText: "Enter your Details",
+            labelText: "Food Details",
+            hintText: "Enter your Food Details",
             suffixIcon: const CustomSurffixIcon(
                 svgIcon: "assets/icons/Location point.svg"),
             errorText:
