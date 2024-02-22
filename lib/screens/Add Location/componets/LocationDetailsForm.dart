@@ -65,8 +65,8 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
         children: [
           CustomTextField(
             controller: FnameController,
-            labelText: "Location Name",
-            hintText: "Enter your Location name",
+            labelText: "Full Name",
+            hintText: "Enter your full name",
             suffixIcon:
                 const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             onSaved: (newValue) => firstName = newValue,
@@ -112,8 +112,8 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
           const SizedBox(height: 20),
           CustomTextField(
             controller: addressController,
-            labelText: "Location Address",
-            hintText: "Enter your Location Address",
+            labelText: "Address",
+            hintText: "Enter your Address",
             suffixIcon: const CustomSurffixIcon(
                 svgIcon: "assets/icons/Location point.svg"),
             errorText:
@@ -156,7 +156,6 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
               return null;
             },
           ),
-          const SizedBox(height: 10),
           FormError(errors: errors),
           const SizedBox(height: 50),
           CustomElevatedButton(

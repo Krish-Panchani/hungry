@@ -10,19 +10,20 @@ import 'package:hunger/screens/intiScreen.dart';
 class LocatinConfirmScreen extends StatefulWidget {
   final String firstName;
   final String phoneNumber;
-  final String details;
   final String address;
+  final String details;
   final LatLng location;
   final String id;
 
-  const LocatinConfirmScreen(
-      {super.key,
-      required this.firstName,
-      required this.phoneNumber,
-      required this.details,
-      required this.address,
-      required this.location,
-      required this.id});
+  const LocatinConfirmScreen({
+    super.key,
+    required this.firstName,
+    required this.phoneNumber,
+    required this.address,
+    required this.details,
+    required this.location,
+    required this.id,
+  });
 
   @override
   State<LocatinConfirmScreen> createState() => _LocatinConfirmScreenState();
@@ -62,8 +63,8 @@ class _LocatinConfirmScreenState extends State<LocatinConfirmScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text('Your details has been updated after admin approval,'),
-                  Text('We will contact you soon for verification.'),
+                  Text('Your details has been updated after approval,'),
+                  Text('We will Contact you soon for verification.'),
                 ],
               ),
             ),
@@ -90,64 +91,58 @@ class _LocatinConfirmScreenState extends State<LocatinConfirmScreen> {
                       ),
                     ),
                     child: SingleChildScrollView(
-                      child: Expanded(
-                        child: ListTile(
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                          text: 'Location Name: ',
-                                          style: kTextStyleB),
-                                      TextSpan(
-                                          text: widget.firstName,
-                                          style: kTextStyleN),
-                                    ],
-                                  ),
-                                ),
+                      child: ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Location Name: ',
+                                      style: kTextStyleB),
+                                  TextSpan(
+                                      text: widget.firstName,
+                                      style: kTextStyleN),
+                                ],
                               ),
-                              const SizedBox(height: 5),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    const TextSpan(
-                                        text: 'Location Address: ',
-                                        style: kTextStyleB),
-                                    TextSpan(
-                                        text: widget.address,
-                                        style: kTextStyleN),
-                                  ],
-                                ),
+                            ),
+                            const SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Location Address: ',
+                                      style: kTextStyleB),
+                                  TextSpan(
+                                      text: widget.address, style: kTextStyleN),
+                                ],
                               ),
-                              const SizedBox(height: 5),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    const TextSpan(
-                                        text: 'Details: ', style: kTextStyleB),
-                                    TextSpan(
-                                        text: widget.details,
-                                        style: kTextStyleN),
-                                  ],
-                                ),
+                            ),
+                            const SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Details: ', style: kTextStyleB),
+                                  TextSpan(
+                                      text: widget.details, style: kTextStyleN),
+                                ],
                               ),
-                              const SizedBox(height: 5),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    const TextSpan(
-                                        text: 'Phone: ', style: kTextStyleB),
-                                    TextSpan(
-                                        text: widget.phoneNumber,
-                                        style: kTextStyleN),
-                                  ],
-                                ),
+                            ),
+                            const SizedBox(height: 5),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Phone: ', style: kTextStyleB),
+                                  TextSpan(
+                                      text: widget.phoneNumber,
+                                      style: kTextStyleN),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

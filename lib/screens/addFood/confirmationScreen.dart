@@ -177,86 +177,80 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                         width: 2.0,
                       ),
                     ),
-                    child: Expanded(
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(10.0),
-                        leading: const Icon(
-                          Icons.location_on_outlined,
-                          size: 40,
-                          color: kPrimaryColor,
-                        ),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: RichText(
-                                text: const TextSpan(
-                                  children: [
-                                    TextSpan(
-                                        text: 'Name: ', style: kTextStyleB),
-                                    TextSpan(
-                                        text: 'AHM FoodBank',
-                                        style: kTextStyleN),
-                                  ],
-                                ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      leading: const Icon(
+                        Icons.location_on_outlined,
+                        size: 40,
+                        color: kPrimaryColor,
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: RichText(
+                              text: const TextSpan(
+                                children: [
+                                  TextSpan(text: 'Name: ', style: kTextStyleB),
+                                  TextSpan(
+                                      text: 'AHM FoodBank', style: kTextStyleN),
+                                ],
                               ),
                             ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.white,
-                                surfaceTintColor: Colors.white,
-                                visualDensity: const VisualDensity(
-                                  horizontal: -4,
-                                  vertical: -2,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  side: const BorderSide(
-                                    color: kPrimaryColor,
-                                    width: 1.0,
-                                  ),
-                                ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shadowColor: Colors.white,
+                              surfaceTintColor: Colors.white,
+                              visualDensity: const VisualDensity(
+                                horizontal: -4,
+                                vertical: -2,
                               ),
-                              onPressed: () {},
-                              child: const Text(
-                                '2 km',
-                                style: TextStyle(
-                                  fontSize: 16,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(
                                   color: kPrimaryColor,
+                                  width: 1.0,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RichText(
-                              text: const TextSpan(
-                                children: [
-                                  TextSpan(
-                                      text: 'Address: ', style: kTextStyleB),
-                                  TextSpan(
-                                      text: 'Ahmedabad, Gujrat',
-                                      style: kTextStyleN),
-                                ],
+                            onPressed: () {},
+                            child: const Text(
+                              '2 km',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: kPrimaryColor,
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
+                          ),
+                        ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: const TextSpan(
+                              children: [
+                                TextSpan(text: 'Address: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: 'Ahmedabad, Gujrat',
+                                    style: kTextStyleN),
+                              ],
                             ),
-                            RichText(
-                              text: const TextSpan(
-                                children: [
-                                  TextSpan(
-                                      text: 'Contact: ', style: kTextStyleB),
-                                  TextSpan(
-                                      text: '9867345262', style: kTextStyleN),
-                                ],
-                              ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          RichText(
+                            text: const TextSpan(
+                              children: [
+                                TextSpan(text: 'Contact: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: '9867345262', style: kTextStyleN),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
