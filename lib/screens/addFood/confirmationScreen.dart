@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
@@ -63,9 +64,8 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                      'Your details is notified to nearby Food Banks, and will'),
-                  Text('Contact you soon as possible'),
+                  Text('Your details is notified to nearby Food Banks,'),
+                  Text('and will Contact you soon as possible'),
                 ],
               ),
             ),
@@ -123,7 +123,8 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                               text: TextSpan(
                                 children: [
                                   const TextSpan(
-                                      text: 'Details: ', style: kTextStyleB),
+                                      text: 'Food Details: ',
+                                      style: kTextStyleB),
                                   TextSpan(
                                       text: widget.details, style: kTextStyleN),
                                 ],
@@ -176,78 +177,86 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                         width: 2.0,
                       ),
                     ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10.0),
-                      leading: const Icon(
-                        Icons.location_on_outlined,
-                        size: 40,
-                        color: kPrimaryColor,
-                      ),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              children: [
-                                TextSpan(text: 'Name: ', style: kTextStyleB),
-                                TextSpan(
-                                    text: 'AHM FoodBank', style: kTextStyleN),
-                              ],
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shadowColor: Colors.white,
-                              surfaceTintColor: Colors.white,
-                              visualDensity: const VisualDensity(
-                                horizontal: -4,
-                                vertical: -2,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: const BorderSide(
-                                  color: kPrimaryColor,
-                                  width: 1.0,
+                    child: Expanded(
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(10.0),
+                        leading: const Icon(
+                          Icons.location_on_outlined,
+                          size: 40,
+                          color: kPrimaryColor,
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: 'Name: ', style: kTextStyleB),
+                                    TextSpan(
+                                        text: 'AHM FoodBank',
+                                        style: kTextStyleN),
+                                  ],
                                 ),
                               ),
                             ),
-                            onPressed: () {},
-                            child: const Text(
-                              '2 km',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: kPrimaryColor,
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.white,
+                                surfaceTintColor: Colors.white,
+                                visualDensity: const VisualDensity(
+                                  horizontal: -4,
+                                  vertical: -2,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: const BorderSide(
+                                    color: kPrimaryColor,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text(
+                                '2 km',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: kPrimaryColor,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              children: [
-                                TextSpan(text: 'Address: ', style: kTextStyleB),
-                                TextSpan(
-                                    text: 'Ahmedabad, Gujrat',
-                                    style: kTextStyleN),
-                              ],
+                          ],
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: const TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: 'Address: ', style: kTextStyleB),
+                                  TextSpan(
+                                      text: 'Ahmedabad, Gujrat',
+                                      style: kTextStyleN),
+                                ],
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          RichText(
-                            text: const TextSpan(
-                              children: [
-                                TextSpan(text: 'Contact: ', style: kTextStyleB),
-                                TextSpan(
-                                    text: '9867345262', style: kTextStyleN),
-                              ],
+                            const SizedBox(
+                              height: 10,
                             ),
-                          ),
-                        ],
+                            RichText(
+                              text: const TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: 'Contact: ', style: kTextStyleB),
+                                  TextSpan(
+                                      text: '9867345262', style: kTextStyleN),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

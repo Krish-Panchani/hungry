@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/components/customTextField.dart';
+import 'package:hunger/screens/Add%20Location/LocationConfirmation.dart';
 import 'package:hunger/screens/Add%20Location/LocationDetails.dart';
 import 'package:hunger/screens/Add%20Location/mapScreen2.dart';
 import 'package:uuid/uuid.dart';
@@ -159,10 +160,28 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
           FormError(errors: errors),
           const SizedBox(height: 50),
           CustomElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
+                // Save the form data
                 _formKey.currentState!.save();
-                _navigateToMapScreen();
+
+                // Navigate to the map screen to select a location
+                LatLng? location = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MapScreen2(
+                      firstName: FnameController.text.trim(),
+                      phoneNumber: PhoneController.text.trim(),
+                      address: addressController.text.trim(),
+                      details: detialsController.text.trim(),
+                    ),
+                  ),
+                );
+
+                // If a location is selected on the map screen, save the data to Firestore
+                if (location != null) {
+                  saveDataAndNavigate(location);
+                }
               }
             },
             text: "Select Location",
@@ -172,44 +191,45 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
     );
   }
 
-  void _navigateToMapScreen() async {
-    setState(() {
-      _isLoading = true;
-    });
-
+  void _openMapToSelectLocation() async {
+    // Navigate to map screen where user can select location
     LatLng? location = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MapScreen2(
-          firstName: FnameController.text.trim(),
-          phoneNumber: PhoneController.text.trim(),
-          address: addressController.text.trim(),
-          details: detialsController.text.trim(),
+        builder: (context) => const MapScreen2(
+          firstName: '',
+          phoneNumber: '',
+          details: '',
+          address: '',
         ),
       ),
     );
 
     if (location != null) {
-      saveDataToRealtimeDatabase(location);
-    } else {
       setState(() {
-        _isLoading = false;
+        selectedLocation = location;
       });
     }
   }
 
-  void saveDataToRealtimeDatabase(LatLng location) async {
+  Future<void> saveDataAndNavigate(LatLng location) async {
     try {
-      setState(() {
-        _isLoading = true;
-      });
+      // Save data to Firebase
+      String id = const Uuid().v4();
+      await saveDataToRealtimeDatabase(location, id);
 
-      User? user = FirebaseAuth.instance.currentUser;
+      // Navigate to next screen with all the data
+      navigateToConfirmationScreen(location, id);
+    } catch (error) {
+      // Handle error
+      print("Error saving data: $error");
+    }
+  }
 
-      if (user == null) {
-        throw Exception("User not authenticated");
-      }
+  Future<void> saveDataToRealtimeDatabase(LatLng location, String id) async {
+    User? user = FirebaseAuth.instance.currentUser;
 
+    if (user != null) {
       String userId = user.uid;
       String Fname = FnameController.text.trim();
       String phone = PhoneController.text.trim();
@@ -217,8 +237,6 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
       String details = detialsController.text.trim();
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
-
-      String id = const Uuid().v4();
 
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
@@ -230,21 +248,23 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
         "location": selectedLocationString,
       });
 
-      log("Location data saved to Realtime Database");
-
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => const LocationDetailsScreen(),
-        ),
-      );
-    } catch (error) {
-      print("Error saving data: $error");
-      // Handle error appropriately, show error message to the user, etc.
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      log("User data saved to Realtime Database");
     }
+  }
+
+  void navigateToConfirmationScreen(LatLng location, String id) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => LocatinConfirmScreen(
+          firstName: FnameController.text.trim(),
+          phoneNumber: PhoneController.text.trim(),
+          address: addressController.text.trim(),
+          details: detialsController.text.trim(),
+          location: location,
+          id: id,
+        ),
+      ),
+    );
   }
 }
