@@ -27,7 +27,9 @@ git clone https://github.com/AbhishekDoshi26/abhishek_doshi_portfolio.git
 
 3. Get an API key at <https://cloud.google.com/maps-platform/>.
 
-4. ### Android
+4. Paste an API Key according to below instruction
+
+### Android
 
 Specify your API key in the application manifest `android/app/src/main/AndroidManifest.xml`:
 
@@ -79,3 +81,11 @@ import GoogleMaps
 ```
 Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file
 with the key `io.flutter.embedded_views_preview` and the value `YES`.
+
+5. Run the Flutter app using the following command:
+
+```
+flutter run
+```
+
+
