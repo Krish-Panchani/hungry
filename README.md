@@ -1,13 +1,33 @@
+## 🚀 Introduction
+
 # Food Finder
 <br>
 <p></t>Hungry? No Need! Our mobile app leverages Google Cloud, Firebase, and Flutter to fight hunger! We map nearby free food locations like pantries, shelters, and community kitchens, empowering users to find immediate meals and connecting them with valuable resources. Join us to build a hunger-free future, one tap at a time!</p>
 
+## 🛠️ Technologies Used
 
-## Getting Started
+The Hunger App is built using the following technologies:
 
-Get an API key at <https://cloud.google.com/maps-platform/>.
+- Flutter SDK
+- Dart programming language
+- Flutter packages for Google Map
 
-### Android
+
+
+## ⚙️ Getting Started
+
+To run this project locally, follow these steps:
+
+1. Clone this repository to your local machine using:
+```
+git clone https://github.com/AbhishekDoshi26/abhishek_doshi_portfolio.git
+```
+
+2. Open the project in your preferred Flutter development environment.
+
+3. Get an API key at <https://cloud.google.com/maps-platform/>.
+
+4. ### Android
 
 Specify your API key in the application manifest `android/app/src/main/AndroidManifest.xml`:
 
