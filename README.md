@@ -20,14 +20,14 @@ To run this project locally, follow these steps:
 
 1. Clone this repository to your local machine using:
 ```
-git clone https://github.com/AbhishekDoshi26/abhishek_doshi_portfolio.git
+git clone https://github.com/vaibhav-sutariya/hungry.git
 ```
 
 2. Open the project in your preferred Flutter development environment.
 
 3. Get an API key at <https://cloud.google.com/maps-platform/>.
 
-4. Paste an API Key according to below instruction
+4. Paste an API Key according to below instruction.
 
 ### Android
 
