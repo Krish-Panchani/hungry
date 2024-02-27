@@ -5,6 +5,7 @@ import 'package:hunger/pages/AboutUs.dart';
 import 'package:hunger/pages/ContactUs.dart';
 import 'package:hunger/screens/intiScreen.dart';
 import 'package:hunger/screens/sign_in/sign_in_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyDrawer extends StatelessWidget {
   final bool showLogOut;
@@ -65,8 +66,7 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Feedback'),
             onTap: () {
-              // Send an email to the developer
-              // using the email_launcher package
+              _launchFeedbackForm();
             },
           ),
           if (showLogOut) // Conditionally show the LogOut list tile
@@ -118,5 +118,19 @@ class MyDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _launchFeedbackForm() async {
+    const url =
+        'https://docs.google.com/forms/d/e/1FAIpQLScwD_Bbj022AZa53E2GLj6njmveK0p4nqBXO_r9eaZYg6eVHQ/viewform';
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
   }
 }
