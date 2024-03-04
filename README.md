@@ -90,8 +90,11 @@ with the key `io.flutter.embedded_views_preview` and the value `YES`.
 flutter run
 ```
 
+
 ### Demo Video
-https://github.com/vaibhav-sutariya/hungry/assets/98417187/9fff674d-5c63-47cc-b9ce-10921ee2bef9
+https://github.com/vaibhav-sutariya/hungry/assets/98417187/31650d41-7d05-4143-befc-94195358a2d5
+
+
 
 
 
