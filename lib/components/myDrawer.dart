@@ -14,23 +14,52 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
+          DrawerHeader(
             decoration: BoxDecoration(
               color: kPrimaryColor,
             ),
-            child: Text(
-              'Menu',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (user != null && user.photoURL != null)
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(user.photoURL!),
+                  ),
+                if (user == null || user.photoURL == null)
+                  const Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                const SizedBox(height: 10),
+                Text(
+                  user != null ? user.displayName ?? 'User' : 'Guest',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  user != null ? user.email ?? 'User' : 'Guest',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.home_outlined),
             title: const Text('Home'),
             onTap: () {
               Navigator.push(
@@ -42,6 +71,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.info_outline),
             title: const Text('About'),
             onTap: () {
               Navigator.push(
@@ -53,6 +83,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.contact_page_outlined),
             title: const Text('Contact'),
             onTap: () {
               Navigator.push(
@@ -64,6 +95,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.feedback_outlined),
             title: const Text('Feedback'),
             onTap: () {
               _launchFeedbackForm();
@@ -73,6 +105,7 @@ class MyDrawer extends StatelessWidget {
             if (FirebaseAuth.instance.currentUser != null)
               // User is logged in
               ListTile(
+                leading: const Icon(Icons.logout),
                 title: const Text('LogOut'),
                 onTap: () {
                   // Sign out the user
@@ -90,6 +123,7 @@ class MyDrawer extends StatelessWidget {
           // User is not logged in
           if (FirebaseAuth.instance.currentUser == null)
             ListTile(
+              leading: const Icon(Icons.login),
               title: const Text('Login'),
               onTap: () {
                 // Navigate to SignInScreen
@@ -103,7 +137,27 @@ class MyDrawer extends StatelessWidget {
                 );
               },
             ),
-          const SizedBox(height: 20), // Add some spacing
+          DrawerExpansionTile(
+            title: 'Settings & Support',
+            children: [
+              DrawerTile(
+                icon: Icons.settings,
+                title: 'Settings & Privacy',
+                onTap: () {
+                  // Handle onTap for Settings & Privacy
+                },
+              ),
+              DrawerTile(
+                icon: Icons.help,
+                title: 'Help Center',
+                onTap: () {
+                  // Handle onTap for Help Center
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          // Add some spacing
           const Divider(), // Add a divider
           const ListTile(
             title: Text(
@@ -132,5 +186,48 @@ class MyDrawer extends StatelessWidget {
     } catch (e) {
       print('Error launching URL: $e');
     }
+  }
+}
+
+class DrawerExpansionTile extends StatelessWidget {
+  final String title;
+  final List<DrawerTile> children;
+
+  const DrawerExpansionTile({
+    Key? key,
+    required this.title,
+    required this.children,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionTile(
+      title: Text(
+        title,
+      ),
+      children: children,
+    );
+  }
+}
+
+class DrawerTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const DrawerTile({
+    Key? key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: onTap,
+    );
   }
 }
