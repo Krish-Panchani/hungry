@@ -10,12 +10,14 @@ class MapScreen extends StatefulWidget {
       required this.firstName,
       required this.phoneNumber,
       required this.address,
+      required this.persons,
       required this.details})
       : super(key: key);
 
   final String firstName;
   final String phoneNumber;
   final String address;
+  final String persons;
   final String details;
 
   @override

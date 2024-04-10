@@ -12,6 +12,7 @@ class FoodConfirmationDetails extends StatefulWidget {
   final String phoneNumber;
   final String address;
   final String details;
+  final String persons;
   final LatLng location;
   final String id;
 
@@ -21,6 +22,7 @@ class FoodConfirmationDetails extends StatefulWidget {
     required this.phoneNumber,
     required this.address,
     required this.details,
+    required this.persons,
     required this.location,
     required this.id,
   }) : super(key: key);
@@ -115,6 +117,16 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                                       text: 'Address: ', style: kTextStyleB),
                                   TextSpan(
                                       text: widget.address, style: kTextStyleN),
+                                ],
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Persons: ', style: kTextStyleB),
+                                  TextSpan(
+                                      text: widget.persons, style: kTextStyleN),
                                 ],
                               ),
                             ),

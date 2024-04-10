@@ -26,6 +26,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
   TextEditingController FnameController = TextEditingController();
   TextEditingController PhoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController personNumberController = TextEditingController();
   TextEditingController detialsController = TextEditingController();
   LatLng? selectedLocation;
 
@@ -36,6 +37,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
   String? firstName;
   String? phoneNumber;
   String? address;
+  String? persons;
   String? details;
 
   void addError({String? error}) {
@@ -131,12 +133,35 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
           ),
           const SizedBox(height: 25),
           CustomTextField(
+            controller: personNumberController,
+            labelText: "For how many persons?",
+            hintText: "Enter number of persons",
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/User Icon.svg"),
+            errorText:
+                errors.contains(kPersonNullError) ? kPersonNullError : null,
+            onSaved: (newValue) => persons = newValue,
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                removeError(error: kPersonNullError);
+              }
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                addError(error: kPersonNullError);
+                return kPersonNullError;
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 25),
+          CustomTextField(
             controller: detialsController,
             maxLines: 3,
             labelText: "Food Details",
             hintText: "Enter your Food Details",
             suffixIcon: const CustomSurffixIcon(
-                svgIcon: "assets/icons/Location point.svg"),
+                svgIcon: "assets/icons/Chat bubble Icon.svg"),
             errorText:
                 errors.contains(kDetailsNullError) ? kDetailsNullError : null,
             onSaved: (newValue) => details = newValue,
@@ -170,6 +195,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
                       firstName: FnameController.text.trim(),
                       phoneNumber: PhoneController.text.trim(),
                       address: addressController.text.trim(),
+                      persons: personNumberController.text.trim(),
                       details: detialsController.text.trim(),
                     ),
                   ),
@@ -197,6 +223,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
           firstName: '',
           phoneNumber: '',
           details: '',
+          persons: '',
           address: '',
         ),
       ),
@@ -231,6 +258,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
       String Fname = FnameController.text.trim();
       String phone = PhoneController.text.trim();
       String address = addressController.text.trim();
+      String persons = personNumberController.text.trim();
       String details = detialsController.text.trim();
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
@@ -241,6 +269,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
         "Fname": Fname,
         "phone": phone,
         "address": address,
+        "persons": persons,
         "details": details,
         "location": selectedLocationString,
       });
@@ -257,6 +286,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
           firstName: FnameController.text.trim(),
           phoneNumber: PhoneController.text.trim(),
           address: addressController.text.trim(),
+          persons: personNumberController.text.trim(),
           details: detialsController.text.trim(),
           location: location,
           id: id,

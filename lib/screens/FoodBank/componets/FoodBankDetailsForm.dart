@@ -138,7 +138,7 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
             labelText: "Details",
             hintText: "Enter your Details",
             suffixIcon: const CustomSurffixIcon(
-                svgIcon: "assets/icons/Location point.svg"),
+                svgIcon: "assets/icons/Chat bubble Icon.svg"),
             errorText:
                 errors.contains(kDetailsNullError) ? kDetailsNullError : null,
             onSaved: (newValue) => details = newValue,
