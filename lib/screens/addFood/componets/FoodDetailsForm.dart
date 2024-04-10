@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/components/customTextField.dart';
 import 'package:hunger/screens/addFood/confirmationScreen.dart';
-import 'package:hunger/screens/addFood/mapScreen.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../components/custom_surfix_icon.dart';
@@ -31,6 +31,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
   LatLng? selectedLocation;
 
   String? userId;
+  Position? _currentPosition;
 
   final _formKey = GlobalKey<FormState>();
   final List<String?> errors = [];
@@ -53,6 +54,26 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
       setState(() {
         errors.remove(error);
       });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      final Position? position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      setState(() {
+        _currentPosition = position;
+      });
+    } catch (e) {
+      log('Error getting current location: $e');
+      // Handle error, such as showing a message to the user
     }
   }
 
@@ -187,86 +208,84 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
                 // Save the form data
                 _formKey.currentState!.save();
 
-                // Navigate to the map screen to select a location
-                LatLng? location = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MapScreen(
-                      firstName: FnameController.text.trim(),
-                      phoneNumber: PhoneController.text.trim(),
-                      address: addressController.text.trim(),
-                      persons: personNumberController.text.trim(),
-                      details: detialsController.text.trim(),
+                if (_currentPosition != null) {
+                  // If current position is available, save data to Firestore
+                  await saveDataAndNavigate();
+                } else {
+                  // Show error if current position is not available
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Unable to fetch current location.'),
                     ),
-                  ),
-                );
-
-                // If a location is selected on the map screen, save the data to Firestore
-                if (location != null) {
-                  saveDataAndNavigate(location);
+                  );
                 }
               }
             },
-            text: "Select Location",
+            text: "Submit",
           ),
         ],
       ),
     );
   }
 
-  void _openMapToSelectLocation() async {
-    // Navigate to map screen where user can select location
-    LatLng? location = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const MapScreen(
-          firstName: '',
-          phoneNumber: '',
-          details: '',
-          persons: '',
-          address: '',
-        ),
-      ),
-    );
+  // void _openMapToSelectLocation() async {
+  //   // Navigate to map screen where user can select location
+  //   LatLng? location = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => const MapScreen(
+  //         firstName: '',
+  //         phoneNumber: '',
+  //         details: '',
+  //         persons: '',
+  //         address: '',
+  //       ),
+  //     ),
+  //   );
 
-    if (location != null) {
-      setState(() {
-        selectedLocation = location;
-      });
-    }
-  }
+  //   if (location != null) {
+  //     setState(() {
+  //       selectedLocation = location;
+  //     });
+  //   }
+  // }
 
-  Future<void> saveDataAndNavigate(LatLng location) async {
+  Future<void> saveDataAndNavigate() async {
     try {
       // Save data to Firebase
       String id = const Uuid().v4();
-      await saveDataToRealtimeDatabase(location, id);
+      await saveDataToRealtimeDatabase(id);
 
-      // Navigate to next screen with all the data
-      navigateToConfirmationScreen(location, id);
+      // Navigate to confirmation screen with all the data
+      navigateToConfirmationScreen(id);
     } catch (error) {
       // Handle error
       print("Error saving data: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error saving data. Please try again later.'),
+        ),
+      );
     }
   }
 
-  Future<void> saveDataToRealtimeDatabase(LatLng location, String id) async {
+  Future<void> saveDataToRealtimeDatabase(String id) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       String userId = user.uid;
-      String Fname = FnameController.text.trim();
+      String fName = FnameController.text.trim();
       String phone = PhoneController.text.trim();
       String address = addressController.text.trim();
       String persons = personNumberController.text.trim();
       String details = detialsController.text.trim();
       String selectedLocationString =
-          "${location.latitude},${location.longitude}";
+          "${_currentPosition!.latitude},${_currentPosition!.longitude}";
 
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
       await databaseReference.child('users').child(userId).child(id).set({
-        "Fname": Fname,
+        "fName": fName,
         "phone": phone,
         "address": address,
         "persons": persons,
@@ -278,7 +297,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
     }
   }
 
-  void navigateToConfirmationScreen(LatLng location, String id) {
+  void navigateToConfirmationScreen(String id) {
     Navigator.push(
       context,
       CupertinoPageRoute(
@@ -288,7 +307,8 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
           address: addressController.text.trim(),
           persons: personNumberController.text.trim(),
           details: detialsController.text.trim(),
-          location: location,
+          location:
+              LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
           id: id,
         ),
       ),
