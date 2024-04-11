@@ -6,7 +6,6 @@ import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/addFood/componets/NearbyFoodBank.dart';
 import 'package:hunger/screens/addFood/thankYouScreen.dart';
-import 'package:hunger/screens/intiScreen.dart';
 
 class FoodConfirmationDetails extends StatefulWidget {
   final String firstName;
