@@ -1,14 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
+
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/addFood/componets/NearbyFoodBank.dart';
-import 'package:hunger/screens/addFood/thankYouScreen.dart';
 import 'package:hunger/screens/intiScreen.dart';
 
-class FoodConfirmationDetails extends StatefulWidget {
+class ThankYouScreen extends StatefulWidget {
   final String firstName;
   final String phoneNumber;
   final String address;
@@ -16,8 +18,7 @@ class FoodConfirmationDetails extends StatefulWidget {
   final String persons;
   final LatLng location;
   final String id;
-
-  const FoodConfirmationDetails({
+  const ThankYouScreen({
     Key? key,
     required this.firstName,
     required this.phoneNumber,
@@ -29,11 +30,10 @@ class FoodConfirmationDetails extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FoodConfirmationDetails> createState() =>
-      _FoodConfirmationDetailsState();
+  State<ThankYouScreen> createState() => _ThankYouScreenState();
 }
 
-class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
+class _ThankYouScreenState extends State<ThankYouScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,17 +50,26 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                     height: 20,
                   ),
                   Text(
-                    'Confirm???',
+                    'Thank you',
                     style: TextStyle(
+                      color: kPrimaryColor,
                       fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  Text(
+                    'For your small Help',
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 20,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  Text('Your small help let our App one step close to'),
-                  Text('kill the Hunger'),
+                  Text('Your details is notified to nearby Food Banks,'),
+                  Text('and will Contact you soon as possible'),
                 ],
               ),
             ),
@@ -171,20 +180,12 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                 Navigator.pushReplacement(
                   context,
                   CupertinoPageRoute(
-                    builder: (context) => ThankYouScreen(
-                      firstName: widget.firstName,
-                      phoneNumber: widget.phoneNumber,
-                      address: widget.address,
-                      details: widget.details,
-                      persons: widget.persons,
-                      location: widget.location,
-                      id: widget.id,
-                    ),
+                    builder: (context) => const InitScreen(),
                   ),
                 );
               },
               child: const Text(
-                'Confirm',
+                'Back to Home',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -192,10 +193,6 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 16,
-            ),
-            Text('Food bank will be notified when you click "confirm"'),
             SizedBox(
               height: 16,
             ),
