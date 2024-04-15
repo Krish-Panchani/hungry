@@ -190,12 +190,12 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
                       print(value);
                     }
                     FirebaseAuth auth = FirebaseAuth.instance;
-                    String? userId = auth.currentUser?.uid;
+                    String? authUserId = auth.currentUser?.uid;
                     if (userId == null) {
                       return // Store the device token in Firestore
                           FirebaseFirestore.instance
                               .collection('tokens')
-                              .doc(userId)
+                              .doc(authUserId)
                               .set({'token': value}).then((_) {
                         print('Device token stored in Firestore');
                       }).catchError((error) {
