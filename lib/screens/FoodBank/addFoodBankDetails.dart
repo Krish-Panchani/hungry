@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
@@ -24,13 +23,6 @@ class _AddFoodBankDetailsState extends State<AddFoodBankDetails> {
     notificationServices.firebaseInit(context);
     notificationServices.setupInteractMessage(context);
     notificationServices.isTokenRefresh();
-
-    notificationServices.getDeviceToken().then((value) {
-      if (kDebugMode) {
-        print('device token');
-        print(value);
-      }
-    });
   }
 
   @override

@@ -1,14 +1,17 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/components/customTextField.dart';
 import 'package:hunger/screens/FoodBank/FoodBankDetails.dart';
 import 'package:hunger/screens/FoodBank/mapScreen3.dart';
+import 'package:hunger/services/Notification.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../components/custom_surfix_icon.dart';
@@ -23,6 +26,7 @@ class AddFoodBankDetailsForm extends StatefulWidget {
 }
 
 class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
+  NotificationServices notificationServices = NotificationServices();
   TextEditingController FnameController = TextEditingController();
   TextEditingController PhoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -180,6 +184,25 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
                 // If a location is selected on the map screen, save the data to Firestore
                 if (location != null) {
                   saveDataToRealtimeDatabase(location);
+                  notificationServices.getDeviceToken().then((value) {
+                    if (kDebugMode) {
+                      print('device token');
+                      print(value);
+                    }
+                    FirebaseAuth auth = FirebaseAuth.instance;
+                    String? userId = auth.currentUser?.uid;
+                    if (userId == null) {
+                      return // Store the device token in Firestore
+                          FirebaseFirestore.instance
+                              .collection('tokens')
+                              .doc(userId)
+                              .set({'token': value}).then((_) {
+                        print('Device token stored in Firestore');
+                      }).catchError((error) {
+                        print('Failed to store device token: $error');
+                      });
+                    }
+                  });
                 }
               }
             },
