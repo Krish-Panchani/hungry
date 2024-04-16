@@ -152,7 +152,7 @@ class _NearbyFoodBanksState extends State<NearbyFoodBanks> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  userData.Head,
+                                  userData.Fname,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
