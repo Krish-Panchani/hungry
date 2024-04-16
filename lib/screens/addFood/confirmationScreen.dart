@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -223,38 +224,51 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
   }
 
   void sendNotification() {
-    // send notification from one device to another
-    notificationServices.getDeviceToken().then((value) async {
-      var data = {
-        'to': value.toString(),
-        'notification': {
-          'title': 'Vaibhav Sutariya',
-          'body': 'Jay Shree Swaminarayan',
-          "sound": "jetsons_doorbell.mp3"
-        },
-        'android': {
-          'notification': {
-            'notification_count': 23,
-          },
-        },
-        'data': {'type': 'msg', 'id': '1234'}
-      };
-
-      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-          body: jsonEncode(data),
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization':
-                'key=AAAAzJx4c-0:APA91bF-ZSj7RHik48bjCkpeGQPFQizEgBTIHHxlsFp-aFV28bT5TzKP1P06YBzgDIlNsrlaUTrxWTuxonbGsqi05cglNN1BgIKcF2hjPiv1uMyyu6ZluM1A2xoYg-KSTClA_mdm-Cdm'
-          }).then((value) {
-        if (kDebugMode) {
-          print(value.body.toString());
-        }
-      }).onError((error, stackTrace) {
-        if (kDebugMode) {
-          print(error);
-        }
+    FirebaseFirestore.instance
+        .collection('tokens')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        String token = (doc.data() as Map<String, dynamic>)['token'];
+        sendNotificationToToken(token);
       });
+    }).catchError((error) {
+      print("Error retrieving tokens: $error");
+    });
+  }
+
+  void sendNotificationToToken(String token) async {
+    var data = {
+      'to': token,
+      'notification': {
+        'title': 'Vaibhav Sutariya',
+        'body': 'Jay Shree Swaminarayan',
+        "sound": "jetsons_doorbell.mp3"
+      },
+      'android': {
+        'notification': {
+          'notification_count': 23,
+        },
+      },
+      'data': {'type': 'msg', 'id': '1234'}
+    };
+
+    await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization':
+            'key=AAAAzJx4c-0:APA91bF-ZSj7RHik48bjCkpeGQPFQizEgBTIHHxlsFp-aFV28bT5TzKP1P06YBzgDIlNsrlaUTrxWTuxonbGsqi05cglNN1BgIKcF2hjPiv1uMyyu6ZluM1A2xoYg-KSTClA_mdm-Cdm'
+      },
+    ).then((value) {
+      if (kDebugMode) {
+        print(value.body.toString());
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error);
+      }
     });
   }
 }
