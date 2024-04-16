@@ -101,7 +101,7 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                                 const TextSpan(
                                     text: 'Name: ', style: kTextStyleB),
                                 TextSpan(
-                                    text: userData.Head, style: kTextStyleN),
+                                    text: userData.Fname, style: kTextStyleN),
                               ],
                             ),
                           ),
