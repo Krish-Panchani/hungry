@@ -241,9 +241,9 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
     var data = {
       'to': token,
       'notification': {
-        'title': 'Vaibhav Sutariya',
-        'body': 'Jay Shree Swaminarayan',
-        "sound": "jetsons_doorbell.mp3"
+        'title': widget.firstName,
+        'body': widget.address,
+        // "sound": "jetsons_doorbell.mp3"
       },
       'android': {
         'notification': {
