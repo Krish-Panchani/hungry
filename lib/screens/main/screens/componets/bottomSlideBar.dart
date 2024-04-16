@@ -302,8 +302,7 @@ class _BottomSliderState extends State<BottomSlider> {
                                       GestureDetector(
                                         onTap: () {
                                           Provider.of<UserDataProvider>(context,
-                                                  listen: false)
-                                              .setSelectedUserData(userData);
+                                              listen: false);
                                           Navigator.push(
                                             context,
                                             CupertinoPageRoute(
