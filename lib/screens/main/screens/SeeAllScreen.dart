@@ -34,6 +34,14 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
   late DatabaseReference _foodBanksRef;
   late StreamSubscription<dynamic> _userDataSubscription;
   List<UserData> _userDataList = [];
+  List<String> _choices = [
+    'All',
+    'Temples',
+    'Food Banks',
+    'NGO',
+    'Gov. Food Center'
+  ];
+  String _selectedChoice = 'All';
 
   @override
   void initState() {
@@ -116,125 +124,149 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
       drawer: const MyDrawer(
         showLogOut: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: _isLoading
-            ? _buildShimmerList()
-            : _userDataList.isEmpty
-                ? const Center(child: Text('No data available'))
-                : ListView.builder(
-                    itemCount: _userDataList.length,
-                    itemBuilder: (context, index) {
-                      var userData = _userDataList[index];
-                      double locationLat =
-                          double.parse(userData.location.split(',')[0]);
-                      double locationLon =
-                          double.parse(userData.location.split(',')[1]);
-                      double distance = userLat != null && userLon != null
-                          ? calculateDistance(
-                              userLat!, userLon!, locationLat, locationLon)
-                          : 0.0;
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(
-                            color: kPrimaryColor,
-                            width: 2.0,
-                          ),
-                        ),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(10.0),
-                          leading: const Icon(
-                            Icons.location_on_outlined,
-                            size: 50,
-                            color: kPrimaryColor,
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                userData.fname,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+      body: Column(
+        children: [
+          Wrap(
+            spacing: 8.0,
+            children: _choices.map((choice) {
+              return ChoiceChip(
+                label: Text(choice),
+                selected: _selectedChoice == choice,
+                onSelected: (selected) {
+                  setState(() {
+                    _selectedChoice = selected ? choice : 'All';
+                  });
+                },
+              );
+            }).toList(),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _isLoading
+                  ? _buildShimmerList()
+                  : _userDataList.isEmpty
+                      ? const Center(child: Text('No data available'))
+                      : ListView.builder(
+                          itemCount: _userDataList.length,
+                          itemBuilder: (context, index) {
+                            var userData = _userDataList[index];
+                            double locationLat =
+                                double.parse(userData.location.split(',')[0]);
+                            double locationLon =
+                                double.parse(userData.location.split(',')[1]);
+                            double distance = userLat != null && userLon != null
+                                ? calculateDistance(userLat!, userLon!,
+                                    locationLat, locationLon)
+                                : 0.0;
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 5.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                border: Border.all(
+                                  color: kPrimaryColor,
+                                  width: 2.0,
                                 ),
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shadowColor: Colors.white,
-                                  surfaceTintColor: Colors.white,
-                                  visualDensity: const VisualDensity(
-                                    horizontal: -4,
-                                    vertical: -2,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    side: const BorderSide(
-                                      color: kPrimaryColor,
-                                      width: 1.0,
-                                    ),
-                                  ),
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.all(10.0),
+                                leading: const Icon(
+                                  Icons.location_on_outlined,
+                                  size: 50,
+                                  color: kPrimaryColor,
                                 ),
-                                onPressed: () {
-                                  print(
-                                      'Directions pressed for ${userData.fname}');
-                                },
-                                child: Text(
-                                  '${distance.toStringAsFixed(2)} km',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: kPrimaryColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(userData.address),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: kPrimaryColor,
-                                    ),
-                                    onPressed: () {
-                                      // setState(() {
-                                      //   _showSeeAll = true;
-                                      // });
-                                      print(
-                                          'Directions pressed for ${userData.fname}');
-                                      _launchMapsApp(locationLat, locationLon);
-                                    },
-                                    icon: const Icon(Icons.directions),
-                                    label: const Text(
-                                      'Directions',
-                                      style: TextStyle(
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      userData.fname,
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'View Details',
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: kPrimaryColor,
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shadowColor: Colors.white,
+                                        surfaceTintColor: Colors.white,
+                                        visualDensity: const VisualDensity(
+                                          horizontal: -4,
+                                          vertical: -2,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          side: const BorderSide(
+                                            color: kPrimaryColor,
+                                            width: 1.0,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        print(
+                                            'Directions pressed for ${userData.fname}');
+                                      },
+                                      child: Text(
+                                        '${distance.toStringAsFixed(2)} km',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: kPrimaryColor,
+                                        ),
+                                      ),
                                     ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
+                                  ],
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(userData.address),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        ElevatedButton.icon(
+                                          style: ElevatedButton.styleFrom(
+                                            foregroundColor: Colors.white,
+                                            backgroundColor: kPrimaryColor,
+                                          ),
+                                          onPressed: () {
+                                            // setState(() {
+                                            //   _showSeeAll = true;
+                                            // });
+                                            print(
+                                                'Directions pressed for ${userData.fname}');
+                                            _launchMapsApp(
+                                                locationLat, locationLon);
+                                          },
+                                          icon: const Icon(Icons.directions),
+                                          label: const Text(
+                                            'Directions',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        const Text(
+                                          'View Details',
+                                          style: TextStyle(
+                                            color: kPrimaryColor,
+                                            fontWeight: FontWeight.bold,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: kPrimaryColor,
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
+            ),
+          ),
+        ],
       ),
     );
   }
