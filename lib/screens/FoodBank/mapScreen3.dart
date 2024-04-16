@@ -1,22 +1,23 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/constants.dart';
 
 class MapScreen3 extends StatefulWidget {
-  const MapScreen3(
-      {Key? key,
-      required this.firstName,
-      required this.phoneNumber,
-      required this.address,
-      required this.details})
-      : super(key: key);
-
+  const MapScreen3({
+    Key? key,
+    required this.foodNgoName,
+    required this.firstName,
+    required this.phoneNumber,
+    required this.address,
+  }) : super(key: key);
+  final String foodNgoName;
   final String firstName;
   final String phoneNumber;
   final String address;
-  final String details;
 
   @override
   _MapScreen3State createState() => _MapScreen3State();
