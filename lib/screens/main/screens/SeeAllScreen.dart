@@ -134,28 +134,35 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
               )),
           SizedBox(height: 10.0),
           Wrap(
-            spacing: 8.0,
+            spacing: 12.0,
             children: _choices.map((choice) {
               return ChoiceChip(
-                label: Text(choice),
+                label: Text(
+                  choice,
+                  style: TextStyle(
+                    color: _selectedChoice == choice
+                        ? Colors.white
+                        : kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
                 selected: _selectedChoice == choice,
+                showCheckmark: false,
                 onSelected: (selected) {
                   setState(() {
                     _selectedChoice = selected ? choice : 'All';
                   });
                 },
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      20.0), // Adjust the border radius as needed
-                  side:
-                      BorderSide(color: kPrimaryColor), // Set the border color
+                  borderRadius: BorderRadius.circular(12.0),
+                  side: BorderSide(color: kPrimaryColor, width: 1.5),
                 ),
-                selectedColor:
-                    kPrimaryColor,
-                     // Set the background color for selected chips
+                selectedColor: kPrimaryColor,
               );
             }).toList(),
           ),
+          SizedBox(height: 20.0),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -289,7 +296,8 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
 
   Widget _buildShimmerList() {
     return ListView.builder(
-      itemCount: 5, // You can adjust the number of shimmering tiles
+      itemCount:
+          _userDataList.length, // You can adjust the number of shimmering tiles
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
