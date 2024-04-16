@@ -159,14 +159,18 @@ class MyDrawer extends StatelessWidget {
           const SizedBox(height: 20),
           // Add some spacing
           const Divider(), // Add a divider
-          const ListTile(
-            title: Text(
-              'Version 1.0.0',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
+          Text(
+            'Hungry',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
+          Text(
+            'Version 1.0.0',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.grey,
             ),
           ),
         ],
