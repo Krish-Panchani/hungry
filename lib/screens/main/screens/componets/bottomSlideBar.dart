@@ -334,8 +334,7 @@ class _BottomSliderState extends State<BottomSlider> {
 
   Widget _buildShimmerList() {
     return ListView.builder(
-      itemCount:
-          _userDataList.length, // You can adjust the number of shimmering tiles
+      itemCount: 10, // You can adjust the number of shimmering tiles
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
           baseColor: Colors.grey[300]!,
