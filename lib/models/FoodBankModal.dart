@@ -1,5 +1,5 @@
 class FoodBankData {
-  final String Head;
+  final String Fname;
   final String address;
   final String FoodNgoName;
   final String NumberOfPersons;
@@ -7,7 +7,7 @@ class FoodBankData {
   final String phone;
 
   FoodBankData({
-    required this.Head,
+    required this.Fname,
     required this.address,
     required this.FoodNgoName,
     required this.NumberOfPersons,
@@ -17,7 +17,7 @@ class FoodBankData {
 
   factory FoodBankData.fromJson(Map<dynamic, dynamic> json) {
     return FoodBankData(
-      Head: json['Head'] ?? '',
+      Fname: json['Fname'] ?? '',
       address: json['address'] ?? '',
       FoodNgoName: json['FoodNgoName'] ?? '',
       NumberOfPersons: json['volunteers'] ?? '',
