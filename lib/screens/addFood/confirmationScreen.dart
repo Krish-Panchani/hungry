@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -231,6 +232,7 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         String token = (doc.data() as Map<String, dynamic>)['token'];
+        developer.log(token);
         sendNotificationToToken(token);
       });
     }).catchError((error) {
