@@ -317,7 +317,7 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
 
       await databaseReference.child('FoodBanks').child(userId).child(id).set({
         "FoodNgoName": FoodNgoName,
-        "Head": Fname,
+        "Fname": Fname,
         "gmail": Gmail,
         "phone": phone,
         "volunteers": noVolunteers,
