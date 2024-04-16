@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hunger/Provider/UserDataProvider.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/models/UserModal.dart';
 import 'package:hunger/screens/main/screens/SeeAllScreen.dart';
 import 'package:hunger/screens/main/screens/componets/ViewDetails.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:math' show cos, sqrt, asin;
@@ -299,6 +301,9 @@ class _BottomSliderState extends State<BottomSlider> {
                                       const SizedBox(width: 10),
                                       GestureDetector(
                                         onTap: () {
+                                          Provider.of<UserDataProvider>(context,
+                                                  listen: false)
+                                              .setSelectedUserData(userData);
                                           Navigator.push(
                                             context,
                                             CupertinoPageRoute(
