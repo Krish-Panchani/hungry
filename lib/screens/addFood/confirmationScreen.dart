@@ -200,6 +200,7 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                     ),
                   ),
                 );
+                sendNotification();
               },
               child: const Text(
                 'Confirm',
@@ -259,7 +260,7 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization':
-            'key=AAAAzJx4c-0:APA91bF-ZSj7RHik48bjCkpeGQPFQizEgBTIHHxlsFp-aFV28bT5TzKP1P06YBzgDIlNsrlaUTrxWTuxonbGsqi05cglNN1BgIKcF2hjPiv1uMyyu6ZluM1A2xoYg-KSTClA_mdm-Cdm'
+            'key=AAAA9TM7yV8:APA91bG0KMR9MC270qPAfyXxbiHNzZpfwGYvLhptFhttkji5x7PPzqEN6GJN5CZwdG8rumMdg_uSPIePq0DOAL1fW67Q9vfTPy0SFDuHloz-pAwT1lWSbwTAqqepJIHG9sQ4GXPyb0p0'
       },
     ).then((value) {
       if (kDebugMode) {
