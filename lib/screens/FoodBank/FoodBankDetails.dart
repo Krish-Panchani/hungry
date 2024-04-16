@@ -127,6 +127,18 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                               ],
                             ),
                           ),
+                          const SizedBox(height: 5),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                    text: 'Volunteers: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: userData.NumberOfPersons,
+                                    style: kTextStyleN),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
