@@ -126,6 +126,13 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 10.0),
+          Text('Filter by Categories',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              )),
+          SizedBox(height: 10.0),
           Wrap(
             spacing: 8.0,
             children: _choices.map((choice) {
@@ -137,6 +144,15 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                     _selectedChoice = selected ? choice : 'All';
                   });
                 },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      20.0), // Adjust the border radius as needed
+                  side:
+                      BorderSide(color: kPrimaryColor), // Set the border color
+                ),
+                selectedColor:
+                    kPrimaryColor,
+                     // Set the background color for selected chips
               );
             }).toList(),
           ),
