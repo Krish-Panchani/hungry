@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/appBar.dart';
@@ -6,6 +9,8 @@ import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/addFood/componets/NearbyFoodBank.dart';
 import 'package:hunger/screens/addFood/thankYouScreen.dart';
+import 'package:hunger/services/Notification.dart';
+import 'package:http/http.dart' as http;
 
 class FoodConfirmationDetails extends StatefulWidget {
   final String firstName;
@@ -33,6 +38,19 @@ class FoodConfirmationDetails extends StatefulWidget {
 }
 
 class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
+  NotificationServices notificationServices = NotificationServices();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+    notificationServices.isTokenRefresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,5 +220,41 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
         ),
       ),
     );
+  }
+
+  void sendNotification() {
+    // send notification from one device to another
+    notificationServices.getDeviceToken().then((value) async {
+      var data = {
+        'to': value.toString(),
+        'notification': {
+          'title': 'Vaibhav Sutariya',
+          'body': 'Jay Shree Swaminarayan',
+          "sound": "jetsons_doorbell.mp3"
+        },
+        'android': {
+          'notification': {
+            'notification_count': 23,
+          },
+        },
+        'data': {'type': 'msg', 'id': '1234'}
+      };
+
+      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          body: jsonEncode(data),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization':
+                'key=AAAAzJx4c-0:APA91bF-ZSj7RHik48bjCkpeGQPFQizEgBTIHHxlsFp-aFV28bT5TzKP1P06YBzgDIlNsrlaUTrxWTuxonbGsqi05cglNN1BgIKcF2hjPiv1uMyyu6ZluM1A2xoYg-KSTClA_mdm-Cdm'
+          }).then((value) {
+        if (kDebugMode) {
+          print(value.body.toString());
+        }
+      }).onError((error, stackTrace) {
+        if (kDebugMode) {
+          print(error);
+        }
+      });
+    });
   }
 }
