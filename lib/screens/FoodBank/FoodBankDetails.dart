@@ -6,7 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
-import 'package:hunger/models/UserModal.dart';
+import 'package:hunger/models/FoodBankModal.dart';
 import 'package:hunger/screens/FoodBank/addFoodBankDetails.dart';
 
 class FoodBankDetailsScreen extends StatefulWidget {
@@ -20,7 +20,7 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
   late DatabaseReference _databaseRef;
 
   StreamSubscription<dynamic>? _userDataSubscription;
-  final List<UserData> _userDataList = [];
+  final List<FoodBankData> _userDataList = [];
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
             // Assuming userDataMap is a Map<String, dynamic> representing user data
             if (userDataMap != null) {
               userDataMap.forEach((id, data) {
-                _userDataList.add(UserData.fromJson(data));
+                _userDataList.add(FoodBankData.fromJson(data));
               });
             }
           }
@@ -82,13 +82,26 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const SizedBox(height: 5),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                    text: 'FoodBank Name: ',
+                                    style: kTextStyleB),
+                                TextSpan(
+                                    text: userData.FoodNgoName,
+                                    style: kTextStyleN),
+                              ],
+                            ),
+                          ),
                           RichText(
                             text: TextSpan(
                               children: [
                                 const TextSpan(
                                     text: 'Name: ', style: kTextStyleB),
                                 TextSpan(
-                                    text: userData.fname, style: kTextStyleN),
+                                    text: userData.Head, style: kTextStyleN),
                               ],
                             ),
                           ),
@@ -100,17 +113,6 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                                     text: 'Address: ', style: kTextStyleB),
                                 TextSpan(
                                     text: userData.address, style: kTextStyleN),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                const TextSpan(
-                                    text: 'Details: ', style: kTextStyleB),
-                                TextSpan(
-                                    text: userData.details, style: kTextStyleN),
                               ],
                             ),
                           ),

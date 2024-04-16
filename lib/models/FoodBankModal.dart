@@ -1,23 +1,23 @@
 class FoodBankData {
-  final String Fname;
+  final String Head;
   final String address;
-  final String details;
+  final String FoodNgoName;
   final String location;
   final String phone;
 
   FoodBankData({
-    required this.Fname,
+    required this.Head,
     required this.address,
-    required this.details,
+    required this.FoodNgoName,
     required this.location,
     required this.phone,
   });
 
   factory FoodBankData.fromJson(Map<dynamic, dynamic> json) {
     return FoodBankData(
-      Fname: json['Fname'] ?? '',
+      Head: json['Head'] ?? '',
       address: json['address'] ?? '',
-      details: json['details'] ?? '',
+      FoodNgoName: json['FoodNgoName'] ?? '',
       location: json['location'] ?? '',
       phone: json['phone'] ?? '',
     );
