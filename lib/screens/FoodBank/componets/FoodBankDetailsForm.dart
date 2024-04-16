@@ -27,20 +27,24 @@ class AddFoodBankDetailsForm extends StatefulWidget {
 
 class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
   NotificationServices notificationServices = NotificationServices();
+  TextEditingController FoodNGoNameController = TextEditingController();
   TextEditingController FnameController = TextEditingController();
+  TextEditingController GmailController = TextEditingController();
   TextEditingController PhoneController = TextEditingController();
+  TextEditingController VolunteersController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController detialsController = TextEditingController();
   LatLng? selectedLocation;
 
   String? userId;
 
   final _formKey = GlobalKey<FormState>();
   final List<String?> errors = [];
+  String? FoodNgoName;
   String? firstName;
+  String? Gmail;
   String? phoneNumber;
+  String? Volunteers;
   String? address;
-  String? details;
 
   bool _isLoading = false;
 
@@ -67,9 +71,9 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
       child: Column(
         children: [
           CustomTextField(
-            controller: FnameController,
-            labelText: "Full Name",
-            hintText: "Enter your full name",
+            controller: FoodNGoNameController,
+            labelText: "Food Bank or NGO Name",
+            hintText: "Enter Food bank or NGO name",
             suffixIcon:
                 const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
             onSaved: (newValue) => firstName = newValue,
@@ -84,6 +88,53 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
               if (value!.isEmpty) {
                 addError(error: kNamelNullError);
                 return kNamelNullError;
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 20),
+          CustomTextField(
+            controller: FnameController,
+            labelText: "Name of Head Person",
+            hintText: "Enter Name of head person",
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+            onSaved: (newValue) => firstName = newValue,
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                removeError(error: kNamelNullError);
+              }
+            },
+            errorText:
+                errors.contains(kNamelNullError) ? kNamelNullError : null,
+            validator: (value) {
+              if (value!.isEmpty) {
+                addError(error: kNamelNullError);
+                return kNamelNullError;
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 20),
+          CustomTextField(
+            controller: GmailController,
+            labelText: "Gmail",
+            hintText: "Enter your gmail",
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+            errorText: errors.contains(kPhoneNumberNullError)
+                ? kPhoneNumberNullError
+                : null,
+            onSaved: (newValue) => phoneNumber = newValue,
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                removeError(error: kPhoneNumberNullError);
+              }
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                addError(error: kPhoneNumberNullError);
+                return kPhoneNumberNullError;
               }
               return null;
             },
@@ -114,6 +165,29 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
           ),
           const SizedBox(height: 20),
           CustomTextField(
+            controller: VolunteersController,
+            labelText: "No. of Volunteers",
+            hintText: "Enter no. of volunteers",
+            suffixIcon: const CustomSurffixIcon(
+                svgIcon: "assets/icons/Location point.svg"),
+            errorText:
+                errors.contains(kAddressNullError) ? kAddressNullError : null,
+            onSaved: (newValue) => address = newValue,
+            onChanged: (value) {
+              if (value.isNotEmpty) {
+                removeError(error: kAddressNullError);
+              }
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                addError(error: kAddressNullError);
+                return kAddressNullError;
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 20),
+          CustomTextField(
             controller: addressController,
             labelText: "Address",
             hintText: "Enter your Address",
@@ -135,30 +209,6 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
               return null;
             },
           ),
-          const SizedBox(height: 20),
-          CustomTextField(
-            controller: detialsController,
-            maxLines: 3,
-            labelText: "Details",
-            hintText: "Enter your Details",
-            suffixIcon: const CustomSurffixIcon(
-                svgIcon: "assets/icons/Chat bubble Icon.svg"),
-            errorText:
-                errors.contains(kDetailsNullError) ? kDetailsNullError : null,
-            onSaved: (newValue) => details = newValue,
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                removeError(error: kDetailsNullError);
-              }
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                addError(error: kDetailsNullError);
-                return kDetailsNullError;
-              }
-              return null;
-            },
-          ),
           const SizedBox(height: 10),
           FormError(errors: errors),
           const SizedBox(height: 50),
@@ -176,7 +226,7 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
                       firstName: FnameController.text.trim(),
                       phoneNumber: PhoneController.text.trim(),
                       address: addressController.text.trim(),
-                      details: detialsController.text.trim(),
+                      foodNgoName: FoodNGoNameController.text.trim(),
                     ),
                   ),
                 );
@@ -222,10 +272,10 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
       context,
       MaterialPageRoute(
         builder: (context) => MapScreen3(
+          foodNgoName: FoodNGoNameController.text.trim(),
           firstName: FnameController.text.trim(),
           phoneNumber: PhoneController.text.trim(),
           address: addressController.text.trim(),
-          details: detialsController.text.trim(),
         ),
       ),
     );
@@ -252,10 +302,12 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
       }
 
       String userId = user.uid;
+      String FoodNgoName = FoodNGoNameController.text.trim();
       String Fname = FnameController.text.trim();
+      String Gmail = GmailController.text.trim();
       String phone = PhoneController.text.trim();
+      String noVolunteers = VolunteersController.text.trim();
       String address = addressController.text.trim();
-      String details = detialsController.text.trim();
       String selectedLocationString =
           "${location.latitude},${location.longitude}";
 
@@ -264,10 +316,12 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
       await databaseReference.child('FoodBanks').child(userId).child(id).set({
-        "Fname": Fname,
+        "FoodNgoName": FoodNgoName,
+        "Head": Fname,
+        "gmail": Gmail,
         "phone": phone,
+        "volunteers": noVolunteers,
         "address": address,
-        "details": details,
         "location": selectedLocationString,
       });
 
