@@ -48,55 +48,66 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.userData.fname,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          widget.userData.address,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        visualDensity: const VisualDensity(
-                          horizontal: -4,
-                          vertical: -2,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: const BorderSide(
-                            color: kPrimaryColor,
-                            width: 1.0,
-                          ),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.location_on_sharp,
+                        size: 50,
+                        color: Colors.white,
                       ),
-                      onPressed: () {},
-                      child: Text(
-                        '1.0 km',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: kPrimaryColor,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: 50,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.userData.fname,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            widget.userData.address,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.white,
+                          surfaceTintColor: Colors.white,
+                          visualDensity: const VisualDensity(
+                            horizontal: -4,
+                            vertical: -2,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: const BorderSide(
+                              color: kPrimaryColor,
+                              width: 1.0,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {},
+                        child: Text(
+                          '1.0 km',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: kPrimaryColor,
+                          ),
                         ),
                       ),
                     ),
