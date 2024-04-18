@@ -303,7 +303,9 @@ class _BottomSliderState extends State<BottomSlider> {
                                             context,
                                             CupertinoPageRoute(
                                               builder: (context) =>
-                                                  const ViewDetailsScreen(),
+                                                  ViewDetailsScreen(
+                                                userData: userData,
+                                              ),
                                             ),
                                           );
                                         },
