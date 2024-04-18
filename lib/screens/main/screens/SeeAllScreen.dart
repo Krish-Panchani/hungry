@@ -278,7 +278,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                               context,
                                               CupertinoPageRoute(
                                                 builder: (context) =>
-                                                    const ViewDetailsScreen(),
+                                                    ViewDetailsScreen(
+                                                  userData: userData,
+                                                ),
                                               ),
                                             );
                                           },
