@@ -103,9 +103,13 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       height: 150,
@@ -117,14 +121,18 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      widget.userData.details,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      margin: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        widget.userData.details,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 16,
                     ),
                     Row(
                       children: <Widget>[
@@ -152,6 +160,69 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                              text: 'Contact No. : ', style: kTextStyleB),
+                          TextSpan(
+                              text: widget.userData.phone, style: kTextStyleN),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                              text: 'Who can get the food? : ',
+                              style: kTextStyleB),
+                          TextSpan(text: 'Every One', style: kTextStyleN),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                              text: 'Any min. Price for food? : ',
+                              style: kTextStyleB),
+                          TextSpan(text: '0 Rs.', style: kTextStyleN),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Divider(
+                      color: kPrimaryColor,
+                      thickness: 2,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: kPrimaryColor,
+                      ),
+                      onPressed: () {},
+                      icon: const Icon(Icons.directions),
+                      label: const Text(
+                        'Get Directions',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
