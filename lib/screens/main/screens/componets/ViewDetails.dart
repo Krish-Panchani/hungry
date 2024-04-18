@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
+import 'package:hunger/models/UserModal.dart';
 
 class ViewDetailsScreen extends StatefulWidget {
-  const ViewDetailsScreen({super.key});
+  final UserData userData;
+  const ViewDetailsScreen({super.key, required this.userData});
 
   @override
   State<ViewDetailsScreen> createState() => _ViewDetailsScreenState();
@@ -17,8 +19,20 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
       drawer: const MyDrawer(
         showLogOut: true,
       ),
-      body: const Center(
-        child: Text('View Details'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'View Details',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Text('Name: ${widget.userData.fname}'),
+            Text('Address: ${widget.userData.address}'),
+            // Display other details as needed
+          ],
+        ),
       ),
     );
   }
