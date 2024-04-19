@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/components/customTextField.dart';
-import 'package:hunger/screens/FoodBank/FoodBankDetails.dart';
+import 'package:hunger/screens/FoodBank/componets/BasicQAForm.dart';
 import 'package:hunger/screens/FoodBank/mapScreen3.dart';
 import 'package:hunger/services/Notification.dart';
 import 'package:uuid/uuid.dart';
@@ -316,8 +316,8 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
       await databaseReference.child('FoodBanks').child(userId).child(id).set({
-        "FoodNgoName": FoodNgoName,
-        "Fname": Fname,
+        "FoodNgoName": Fname,
+        "Fname": FoodNgoName,
         "gmail": Gmail,
         "phone": phone,
         "volunteers": noVolunteers,
@@ -330,7 +330,7 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
       Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => const FoodBankDetailsScreen(),
+          builder: (context) => const BasicQAForm(),
         ),
       );
     } catch (error) {
