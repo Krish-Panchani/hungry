@@ -289,14 +289,18 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                               ),
                                             );
                                           },
-                                          child: const Text(
-                                            'View Details',
-                                            style: TextStyle(
-                                              color: kPrimaryColor,
-                                              fontWeight: FontWeight.bold,
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              decorationColor: kPrimaryColor,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 12.0),
+                                            child: const Text(
+                                              'View Details',
+                                              style: TextStyle(
+                                                color: kPrimaryColor,
+                                                fontWeight: FontWeight.bold,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                decorationColor: kPrimaryColor,
+                                              ),
                                             ),
                                           ),
                                         )
