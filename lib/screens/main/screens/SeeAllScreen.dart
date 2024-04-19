@@ -248,6 +248,8 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                     Text(userData.address),
                                     const SizedBox(height: 10),
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         ElevatedButton.icon(
                                           style: ElevatedButton.styleFrom(
