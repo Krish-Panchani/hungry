@@ -193,6 +193,17 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                   color: kPrimaryColor,
                                   width: 2.0,
                                 ),
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/logo.png',
+                                  ),
+                                  fit: BoxFit.contain,
+                                  alignment: Alignment.centerRight,
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.white.withOpacity(0.10),
+                                    BlendMode.dstATop,
+                                  ),
+                                ),
                               ),
                               child: ListTile(
                                 contentPadding: const EdgeInsets.all(10.0),
