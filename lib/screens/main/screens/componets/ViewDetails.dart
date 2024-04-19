@@ -28,7 +28,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(22),
                 border: Border.all(
                   color: kPrimaryColor,
                   width: 2,
@@ -84,7 +84,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  maxLines: 2,
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ],
@@ -98,7 +98,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                               shadowColor: Colors.white,
                               backgroundColor: Colors.white,
                               visualDensity: const VisualDensity(
-                                horizontal: -4,
+                                horizontal: -2,
                                 vertical: -2,
                               ),
                               shape: RoundedRectangleBorder(
