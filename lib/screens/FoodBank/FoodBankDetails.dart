@@ -75,6 +75,7 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Center(
               child: Column(
@@ -86,6 +87,7 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                     'Thank You!',
                     style: TextStyle(
                       fontSize: 30,
+                      color: kPrimaryColor,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -195,7 +197,7 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                 );
               },
               child: const Text(
-                'Confirm',
+                'Home',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -203,10 +205,6 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 16,
-            ),
-            Text('Food bank will be notified when you click "confirm"'),
             SizedBox(
               height: 16,
             ),
