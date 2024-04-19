@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/customElevatedButton.dart';
@@ -14,13 +13,13 @@ import 'package:hunger/constants.dart';
 import 'package:hunger/screens/FoodBank/FoodBankDetails.dart';
 
 class BasicQAForm extends StatefulWidget {
-  final String nogName;
+  final String ngoName;
   final String firstName;
   final String address;
   final String phone;
   BasicQAForm({
     Key? key,
-    required this.nogName,
+    required this.ngoName,
     required this.firstName,
     required this.address,
     required this.phone,
@@ -72,7 +71,7 @@ class _BasicQAFormState extends State<BasicQAForm> {
         context,
         CupertinoPageRoute(
           builder: (context) => FoodBankDetailsScreen(
-              ngoName: widget.nogName,
+              ngoName: widget.ngoName,
               address: widget.address,
               phone: widget.phone,
               firstName: widget.firstName),

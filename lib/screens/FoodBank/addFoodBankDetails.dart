@@ -16,7 +16,6 @@ class _AddFoodBankDetailsState extends State<AddFoodBankDetails> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();

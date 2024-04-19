@@ -331,7 +331,7 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
         context,
         CupertinoPageRoute(
           builder: (context) => BasicQAForm(
-            nogName: FoodNGoNameController.text.trim(),
+            ngoName: FoodNGoNameController.text.trim(),
             address: addressController.text.trim(),
             phone: PhoneController.text.trim(),
             firstName: FnameController.text.trim(),

@@ -98,7 +98,12 @@ class _SignFormState extends State<SignForm> {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => const FoodBankDetailsScreen(),
+                  builder: (context) => FoodBankDetailsScreen(
+                    ngoName: '',
+                    firstName: '',
+                    address: '',
+                    phone: '',
+                  ),
                 ),
               );
             } else {
