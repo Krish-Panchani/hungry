@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/components/customTextField.dart';
@@ -12,7 +14,17 @@ import 'package:hunger/constants.dart';
 import 'package:hunger/screens/FoodBank/FoodBankDetails.dart';
 
 class BasicQAForm extends StatefulWidget {
-  const BasicQAForm({super.key});
+  final String nogName;
+  final String firstName;
+  final String address;
+  final String phone;
+  BasicQAForm({
+    Key? key,
+    required this.nogName,
+    required this.firstName,
+    required this.address,
+    required this.phone,
+  }) : super(key: key);
 
   @override
   State<BasicQAForm> createState() => _BasicQAFormState();
@@ -59,7 +71,11 @@ class _BasicQAFormState extends State<BasicQAForm> {
       Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => const FoodBankDetailsScreen(),
+          builder: (context) => FoodBankDetailsScreen(
+              ngoName: widget.nogName,
+              address: widget.address,
+              phone: widget.phone,
+              firstName: widget.firstName),
         ),
       );
     }).catchError((error) {
