@@ -230,6 +230,8 @@ class _BottomSliderState extends State<BottomSlider> {
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -269,9 +271,13 @@ class _BottomSliderState extends State<BottomSlider> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(userData.address),
+                                  Text(userData.address,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis),
                                   const SizedBox(height: 10),
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       ElevatedButton.icon(
                                         style: ElevatedButton.styleFrom(
