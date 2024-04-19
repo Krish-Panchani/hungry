@@ -77,7 +77,7 @@ class _InitScreenState extends State<InitScreen> {
                         borderRadius:
                             BorderRadius.circular(8.0), // Rounded corners
                       ),
-                      elevation: 5, // Elevation (shadow)
+                      // elevation: 5, // Elevation (shadow)
                       minimumSize: const Size(double.infinity, 0), // Full width
                     ),
                     child: const Text(
@@ -122,7 +122,7 @@ class _InitScreenState extends State<InitScreen> {
                           width: 2.0,
                         ), // Rounded corners
                       ),
-                      elevation: 5, // Elevation (shadow)
+                      // elevation: 5, // Elevation (shadow)
                       minimumSize: const Size(double.infinity, 0), // Full width
                     ),
                     child: const Text(
@@ -167,7 +167,7 @@ class _InitScreenState extends State<InitScreen> {
                           width: 2.0,
                         ), // Rounded corners
                       ),
-                      elevation: 5, // Elevation (shadow)
+                      // elevation: 5, // Elevation (shadow)
                       minimumSize: const Size(double.infinity, 0), // Full width
                     ),
                     child: const Text(
@@ -212,7 +212,7 @@ class _InitScreenState extends State<InitScreen> {
                           width: 2.0,
                         ), // Rounded corners
                       ),
-                      elevation: 5, // Elevation (shadow)
+                      // elevation: 5, // Elevation (shadow)
                       minimumSize: const Size(double.infinity, 0), // Full width
                     ),
                     child: const Text(
