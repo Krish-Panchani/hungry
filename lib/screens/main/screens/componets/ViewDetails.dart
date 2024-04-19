@@ -3,11 +3,21 @@ import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/models/UserModal.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewDetailsScreen extends StatefulWidget {
   final UserData userData;
+  final double distance;
+  final double? locationLat;
+  final double? locationLon;
 
-  const ViewDetailsScreen({Key? key, required this.userData}) : super(key: key);
+  const ViewDetailsScreen(
+      {Key? key,
+      required this.userData,
+      required this.distance,
+      required this.locationLat,
+      required this.locationLon})
+      : super(key: key);
 
   @override
   State<ViewDetailsScreen> createState() => _ViewDetailsScreenState();
@@ -111,7 +121,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                             ),
                             onPressed: () {},
                             child: Text(
-                              '1.0 km',
+                              '${widget.distance.toStringAsFixed(2)} km',
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: kPrimaryColor,
@@ -226,7 +236,10 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                             foregroundColor: Colors.white,
                             backgroundColor: kPrimaryColor,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            _launchMapsApp(
+                                widget.locationLat!, widget.locationLon!);
+                          },
                           icon: const Icon(Icons.directions),
                           label: const Text(
                             'Get Directions',
@@ -245,5 +258,15 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
         ),
       ),
     );
+  }
+
+  void _launchMapsApp(double destinationLat, double destinationLon) async {
+    String googleMapsUrl =
+        'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLon';
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      throw 'Could not launch $googleMapsUrl';
+    }
   }
 }
