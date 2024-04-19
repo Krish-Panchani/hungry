@@ -305,6 +305,9 @@ class _BottomSliderState extends State<BottomSlider> {
                                               builder: (context) =>
                                                   ViewDetailsScreen(
                                                 userData: userData,
+                                                distance: distance,
+                                                locationLat: locationLat,
+                                                locationLon: locationLon,
                                               ),
                                             ),
                                           );
