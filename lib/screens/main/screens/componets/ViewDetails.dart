@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/models/UserModal.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewDetailsScreen extends StatefulWidget {
   final UserData userData;
@@ -14,6 +16,35 @@ class ViewDetailsScreen extends StatefulWidget {
 }
 
 class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
+  late double userLat;
+  late double userLon;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+  }
+
+  Future<void> _getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      userLat = position.latitude;
+      userLon = position.longitude;
+    });
+  }
+
+  void _launchMapsApp(double destinationLat, double destinationLon) async {
+    // Launch the maps application with the destination coordinates
+    String googleMapsUrl =
+        'https://www.google.com/maps/dir/?api=1&destination=$destinationLat,$destinationLon';
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
+    } else {
+      throw 'Could not launch $googleMapsUrl';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
