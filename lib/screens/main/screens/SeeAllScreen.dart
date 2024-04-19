@@ -280,6 +280,9 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                                                 builder: (context) =>
                                                     ViewDetailsScreen(
                                                   userData: userData,
+                                                  distance: distance,
+                                                  locationLat: locationLat,
+                                                  locationLon: locationLon,
                                                 ),
                                               ),
                                             );
