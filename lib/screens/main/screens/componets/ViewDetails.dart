@@ -143,11 +143,13 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Text(
-                          widget.userData.details,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        Center(
+                          child: Text(
+                            widget.userData.details,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(
