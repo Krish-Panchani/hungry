@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:js';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -124,14 +125,14 @@ class _BottomSliderState extends State<BottomSlider> {
       borderRadius: BorderRadius.circular(24.0),
       controller: _panelController,
       minHeight: _showSeeAll ? 200 : 60,
-      panel: buildPanel(),
+      panel: buildPanel(context),
       isDraggable: true,
       parallaxEnabled: true,
       defaultPanelState: PanelState.CLOSED,
     );
   }
 
-  Widget buildPanel() {
+  Widget buildPanel(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
