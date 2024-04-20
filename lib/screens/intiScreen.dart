@@ -43,195 +43,189 @@ class _InitScreenState extends State<InitScreen> {
       drawer: const MyDrawer(
         showLogOut: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            AddressBox(
-              initialAddress: _currentAddress,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Are You Hungry?'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AddressBox(
+            initialAddress: _currentAddress,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Are You Hungry?'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) =>
+                              HomeScreen(currentAddress: _currentAddress),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: kPrimaryColor, // Text color
+                      padding: const EdgeInsets.all(16), // Button padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(8.0), // Rounded corners
+                      ),
+                      // elevation: 5, // Elevation (shadow)
+                      minimumSize: const Size(double.infinity, 0), // Full width
                     ),
-                    ElevatedButton(
-                      onPressed: () {
+                    child: const Text(
+                      'Find Food',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('You have Remaining Food?'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
                         Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) =>
-                                HomeScreen(currentAddress: _currentAddress),
+                            builder: (context) => const AddFoodDetails(),
                           ),
                         );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: kPrimaryColor, // Text color
-                        padding: const EdgeInsets.all(16), // Button padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(8.0), // Rounded corners
-                        ),
-                        // elevation: 5, // Elevation (shadow)
-                        minimumSize:
-                            const Size(double.infinity, 0), // Full width
+                      } else {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => SignInScreen(
+                                buttonPressed: "Submit Remaining Food"),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: kPrimaryColor,
+                      backgroundColor: Colors.white, // Text color
+                      padding: const EdgeInsets.all(16), // Button padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        side: const BorderSide(
+                          color: kPrimaryColor,
+                          width: 2.0,
+                        ), // Rounded corners
                       ),
-                      child: const Text(
-                        'Find Food',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
+                      // elevation: 5, // Elevation (shadow)
+                      minimumSize: const Size(double.infinity, 0), // Full width
                     ),
-                    const SizedBox(height: 16),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('You have Remaining Food?'),
+                    child: const Text(
+                      'Submit Remaining Food',
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        User? user = FirebaseAuth.instance.currentUser;
-                        if (user != null) {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const AddFoodDetails(),
-                            ),
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => SignInScreen(
-                                  buttonPressed: "Submit Remaining Food"),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kPrimaryColor,
-                        backgroundColor: Colors.white, // Text color
-                        padding: const EdgeInsets.all(16), // Button padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: const BorderSide(
-                            color: kPrimaryColor,
-                            width: 2.0,
-                          ), // Rounded corners
-                        ),
-                        // elevation: 5, // Elevation (shadow)
-                        minimumSize:
-                            const Size(double.infinity, 0), // Full width
+                  ),
+                  const SizedBox(height: 16),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Want to help us?'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const AddLocationDetails(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => SignInScreen(
+                                buttonPressed: "Add more Locations"),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: kPrimaryColor,
+                      backgroundColor: Colors.white, // Text color
+                      padding: const EdgeInsets.all(16), // Button padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        side: const BorderSide(
+                          color: kPrimaryColor,
+                          width: 2.0,
+                        ), // Rounded corners
                       ),
-                      child: const Text(
-                        'Submit Remaining Food',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
+                      // elevation: 5, // Elevation (shadow)
+                      minimumSize: const Size(double.infinity, 0), // Full width
                     ),
-                    const SizedBox(height: 16),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Want to help us?'),
+                    child: const Text(
+                      'Add more Locations',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        User? user = FirebaseAuth.instance.currentUser;
-                        if (user != null) {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const AddLocationDetails(),
-                            ),
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => SignInScreen(
-                                  buttonPressed: "Add more Locations"),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kPrimaryColor,
-                        backgroundColor: Colors.white, // Text color
-                        padding: const EdgeInsets.all(16), // Button padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: const BorderSide(
-                            color: kPrimaryColor,
-                            width: 2.0,
-                          ), // Rounded corners
-                        ),
-                        // elevation: 5, // Elevation (shadow)
-                        minimumSize:
-                            const Size(double.infinity, 0), // Full width
+                  ),
+                  const SizedBox(height: 16),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Want to register your Food Bank or NGO?'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => const AddFoodBankDetails(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => SignInScreen(
+                                buttonPressed: "Register Food Center"),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: kPrimaryColor,
+                      backgroundColor: Colors.white, // Text color
+                      padding: const EdgeInsets.all(16), // Button padding
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        side: const BorderSide(
+                          color: kPrimaryColor,
+                          width: 2.0,
+                        ), // Rounded corners
                       ),
-                      child: const Text(
-                        'Add more Locations',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
+                      // elevation: 5, // Elevation (shadow)
+                      minimumSize: const Size(double.infinity, 0), // Full width
                     ),
-                    const SizedBox(height: 16),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Want to register your Food Bank or NGO?'),
+                    child: const Text(
+                      'Register Food Center',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        User? user = FirebaseAuth.instance.currentUser;
-                        if (user != null) {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const AddFoodBankDetails(),
-                            ),
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => SignInScreen(
-                                  buttonPressed: "Register Food Center"),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: kPrimaryColor,
-                        backgroundColor: Colors.white, // Text color
-                        padding: const EdgeInsets.all(16), // Button padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: const BorderSide(
-                            color: kPrimaryColor,
-                            width: 2.0,
-                          ), // Rounded corners
-                        ),
-                        // elevation: 5, // Elevation (shadow)
-                        minimumSize:
-                            const Size(double.infinity, 0), // Full width
-                      ),
-                      child: const Text(
-                        'Register Food Center',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
