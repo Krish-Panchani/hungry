@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hunger/components/customElevatedButton.dart';
 import 'package:hunger/components/customTextField.dart';
 import 'package:hunger/screens/Add%20Location/LocationConfirmation.dart';
-import 'package:hunger/screens/Add%20Location/LocationDetails.dart';
 import 'package:hunger/screens/Add%20Location/mapScreen2.dart';
 import 'package:uuid/uuid.dart';
 
