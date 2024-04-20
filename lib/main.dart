@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/firebase_options.dart';
@@ -7,7 +8,17 @@ import 'package:hunger/screens/splashScreen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroudHandler);
   runApp(const MyApp());
+}
+
+// for background notifications
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroudHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print(message.notification!.title.toString());
+  print(message.notification!.body.toString());
+  print(message.data.toString());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +28,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       debugShowCheckedModeBanner: false,
       // theme: AppTheme.lightTheme(context),
       theme: ThemeData(fontFamily: fontfamily),
