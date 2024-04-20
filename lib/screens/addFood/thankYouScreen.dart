@@ -67,8 +67,8 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                   SizedBox(
                     height: 10,
                   ),
-                  Text('Your details is notified to nearby Food Banks,'),
-                  Text('and will Contact you soon as possible'),
+                  Text(
+                      'Your details is notified to nearby Food Banks, \n and will Contact you soon as possible'),
                 ],
               ),
             ),
