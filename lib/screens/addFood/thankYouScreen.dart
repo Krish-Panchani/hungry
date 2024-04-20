@@ -121,6 +121,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 5),
                             RichText(
                               text: TextSpan(
                                 children: [

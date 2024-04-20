@@ -149,6 +149,7 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 5),
                             RichText(
                               text: TextSpan(
                                 children: [
