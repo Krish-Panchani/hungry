@@ -19,12 +19,18 @@ class _SettingsPrivacyScreenState extends State<SettingsPrivacyScreen> {
       drawer: MyDrawer(showLogOut: true),
       body: ListView(
         children: [
+          SizedBox(height: 20), // Add some space (20 pixels
+          Center(
+            child: Text('Settings & Privacy',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(height: 20), // Add some space (20 pixels
+
           ListTile(
             title: Text('Notification Settings'),
             subtitle: Text('Turn on/off notifications'),
             trailing: Switch(
               activeColor: kSecondaryColor,
-              
               value: _notificationEnabled,
               onChanged: (value) {
                 setState(() {
