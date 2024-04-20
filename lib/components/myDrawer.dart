@@ -181,7 +181,7 @@ class MyDrawer extends StatelessWidget {
             ),
           ),
           Text(
-            'Version 1.0.0',
+            'Version 1.2.0',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.grey,
