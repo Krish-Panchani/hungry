@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hunger/components/appBar.dart';
+import 'package:hunger/components/myDrawer.dart';
 
 class SettingsPrivacyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings & Privacy'),
-      ),
+      appBar: MyAppBar(),
+      drawer: MyDrawer(showLogOut: true),
       body: ListView(
         children: [
           ListTile(
