@@ -32,7 +32,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
         showLogOut: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -120,7 +120,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                             child: Text(
                               '${widget.distance.toStringAsFixed(2)} km',
                               style: const TextStyle(
-                                fontSize: 14,
+                                fontSize: 15,
                                 color: kPrimaryColor,
                               ),
                             ),
