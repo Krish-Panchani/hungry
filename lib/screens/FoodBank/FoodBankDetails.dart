@@ -75,7 +75,6 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Center(
               child: Column(
@@ -96,7 +95,9 @@ class FoodBankDetailsScreenState extends State<FoodBankDetailsScreen> {
                   ),
                   Text('For Registering your Food Bank or Food NGO'),
                   Text(
-                      'Our team will reachout you in few hours for further verification process & more info.'),
+                    'Our team will reach out to you in few hours for further\nverification process & more info.',
+                    textAlign: TextAlign.center, // Adjust alignment as needed
+                  )
                 ],
               ),
             ),
