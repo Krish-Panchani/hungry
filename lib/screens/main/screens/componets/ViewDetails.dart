@@ -66,7 +66,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                           padding: EdgeInsets.all(10.0),
                           child: Icon(
                             Icons.location_on_sharp,
-                            size: 50,
+                            size: 40,
                             color: Colors.white,
                           ),
                         ),
@@ -79,7 +79,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                 widget.userData.fname,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
@@ -89,7 +89,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                                 widget.userData.address,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 maxLines: 1,
@@ -120,7 +120,7 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                             child: Text(
                               '${widget.distance.toStringAsFixed(2)} km',
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: kPrimaryColor,
                               ),
                             ),
