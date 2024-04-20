@@ -147,7 +147,7 @@ class MyDrawer extends StatelessWidget {
                 title: 'Settings & Privacy',
                 onTap: () {
                   // Handle onTap for Settings & Privacy
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SettingsPrivacyScreen(),
@@ -160,7 +160,7 @@ class MyDrawer extends StatelessWidget {
                 title: 'Help Center',
                 onTap: () {
                   // Handle onTap for Help Center
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => HelpCenterScreen(),
