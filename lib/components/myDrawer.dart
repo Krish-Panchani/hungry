@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hunger/components/HelpCenter.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/pages/AboutUs.dart';
 import 'package:hunger/pages/ContactUs.dart';
+import 'package:hunger/pages/settingNprivacy.dart';
 import 'package:hunger/screens/intiScreen.dart';
 import 'package:hunger/screens/sign_in/sign_in_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -145,6 +147,12 @@ class MyDrawer extends StatelessWidget {
                 title: 'Settings & Privacy',
                 onTap: () {
                   // Handle onTap for Settings & Privacy
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPrivacyScreen(),
+                    ),
+                  );
                 },
               ),
               DrawerTile(
@@ -152,6 +160,12 @@ class MyDrawer extends StatelessWidget {
                 title: 'Help Center',
                 onTap: () {
                   // Handle onTap for Help Center
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HelpCenterScreen(),
+                    ),
+                  );
                 },
               ),
             ],
