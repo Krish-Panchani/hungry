@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/models/UserModal.dart';
 import 'package:hunger/screens/main/screens/SeeAllScreen.dart';
