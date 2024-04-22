@@ -158,7 +158,7 @@ class _AddFoodDetailsFormState extends State<AddFoodDetailsForm> {
             labelText: "For how many persons?",
             hintText: "Enter number of persons",
             suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/User Icon.svg"),
+                const CustomSurffixIcon(svgIcon: "assets/icons/persons.svg"),
             errorText:
                 errors.contains(kPersonNullError) ? kPersonNullError : null,
             onSaved: (newValue) => persons = newValue,
