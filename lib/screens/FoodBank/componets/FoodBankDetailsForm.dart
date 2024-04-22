@@ -74,8 +74,8 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
             controller: FoodNGoNameController,
             labelText: "Food Bank or NGO Name",
             hintText: "Enter Food bank or NGO name",
-            suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+            suffixIcon: const CustomSurffixIcon(
+                svgIcon: "assets/icons/bank-outline.svg"),
             onSaved: (newValue) => firstName = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -121,7 +121,7 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
             labelText: "Gmail",
             hintText: "Enter your gmail",
             suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+                const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             errorText: errors.contains(kPhoneNumberNullError)
                 ? kPhoneNumberNullError
                 : null,
@@ -168,8 +168,8 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
             controller: VolunteersController,
             labelText: "No. of Volunteers",
             hintText: "Enter no. of volunteers",
-            suffixIcon: const CustomSurffixIcon(
-                svgIcon: "assets/icons/Location point.svg"),
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/persons.svg"),
             errorText:
                 errors.contains(kAddressNullError) ? kAddressNullError : null,
             onSaved: (newValue) => address = newValue,
