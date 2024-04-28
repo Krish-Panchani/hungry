@@ -323,7 +323,6 @@ class _AddFoodBankDetailsFormState extends State<AddFoodBankDetailsForm> {
         "volunteers": noVolunteers,
         "address": address,
         "location": selectedLocationString,
-        // "DeviceToken": notificationServices.getDeviceToken(),
       });
 
       log("Food Bank data saved to Realtime Database");
