@@ -137,7 +137,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
               )),
           SizedBox(height: 10.0),
           Wrap(
-            spacing: 12.0,
+            spacing: 14.0,
             children: _choices.map((choice) {
               return ChoiceChip(
                 label: Text(
@@ -147,7 +147,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
                         ? Colors.white
                         : kPrimaryColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
+                    fontSize: 15.0,
                   ),
                 ),
                 selected: _selectedChoice == choice,
@@ -165,7 +165,7 @@ class _SeeAllScreenState extends State<SeeAllScreen> {
               );
             }).toList(),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
