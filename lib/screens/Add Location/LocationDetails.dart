@@ -127,6 +127,16 @@ class _LocationDetailsScreenState extends State<LocationDetailsScreen> {
                               ],
                             ),
                           ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                    text: 'Status: ', style: kTextStyleB),
+                                TextSpan(
+                                    text: userData.status, style: kTextStyleN),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
