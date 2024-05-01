@@ -4,6 +4,7 @@ class UserData {
   final String details;
   final String location;
   final String phone;
+  final String status;
 
   UserData({
     required this.fname,
@@ -11,6 +12,7 @@ class UserData {
     required this.details,
     required this.location,
     required this.phone,
+    required this.status,
   });
 
   factory UserData.fromJson(Map<dynamic, dynamic> json) {
@@ -20,6 +22,7 @@ class UserData {
       details: json['details'] ?? '',
       location: json['location'] ?? '',
       phone: json['phone'] ?? '',
+      status: json['status'] ?? '',
     );
   }
 }
