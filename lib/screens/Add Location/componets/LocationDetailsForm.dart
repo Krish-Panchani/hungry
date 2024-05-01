@@ -244,6 +244,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
         "address": address,
         "details": details,
         "location": selectedLocationString,
+        "status": "pending",
       });
 
       log("User data saved to Realtime Database");
