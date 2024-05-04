@@ -136,10 +136,16 @@ class _ViewDetailsScreenState extends State<ViewDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 150,
+                          height: 200,
                           decoration: BoxDecoration(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/Details.jpg'), // Provide your image path here
+                              fit: BoxFit
+                                  .cover, // Adjust the image fit as needed
+                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
