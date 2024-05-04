@@ -140,9 +140,20 @@ class _NearbyFoodBanksState extends State<NearbyFoodBanks> {
                               color: kPrimaryColor,
                               width: 2.0,
                             ),
+                            image: DecorationImage(
+                              image: AssetImage(
+                                'assets/images/logo.png',
+                              ),
+                              fit: BoxFit.contain,
+                              alignment: Alignment.centerRight,
+                              colorFilter: ColorFilter.mode(
+                                Colors.white.withOpacity(0.10),
+                                BlendMode.dstATop,
+                              ),
+                            ),
                           ),
                           child: ListTile(
-                            contentPadding: const EdgeInsets.all(10.0),
+                            contentPadding: const EdgeInsets.all(3.0),
                             leading: const Icon(
                               Icons.location_on_outlined,
                               size: 50,
@@ -156,38 +167,52 @@ class _NearbyFoodBanksState extends State<NearbyFoodBanks> {
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shadowColor: Colors.white,
-                                    surfaceTintColor: Colors.white,
-                                    visualDensity: const VisualDensity(
-                                      horizontal: -4,
-                                      vertical: -2,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      side: const BorderSide(
-                                        color: kPrimaryColor,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {},
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
                                   child: Text(
                                     '${distance.toStringAsFixed(2)} km',
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                    style: TextStyle(
                                       color: kPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      decorationColor: kPrimaryColor,
                                     ),
                                   ),
-                                ),
+                                )
+                                // ElevatedButton(
+                                //   style: ElevatedButton.styleFrom(
+                                //     shadowColor: Colors.white,
+                                //     surfaceTintColor: Colors.white,
+                                //     visualDensity: const VisualDensity(
+                                //       horizontal: -4,
+                                //       vertical: -2,
+                                //     ),
+                                //     shape: RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.circular(10.0),
+                                //       side: const BorderSide(
+                                //         color: kPrimaryColor,
+                                //         width: 1.0,
+                                //       ),
+                                //     ),
+                                //   ),
+                                //   onPressed: () {},
+                                //   child: Text(
+                                //     '${distance.toStringAsFixed(2)} km',
+                                //     style: const TextStyle(
+                                //       fontSize: 16,
+                                //       color: kPrimaryColor,
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(userData.address),
+                                Text('Contact: ${userData.phone}'),
                                 const SizedBox(height: 10),
                                 Row(
                                   children: [
@@ -209,15 +234,15 @@ class _NearbyFoodBanksState extends State<NearbyFoodBanks> {
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    const Text(
-                                      'View Details',
-                                      style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: kPrimaryColor,
-                                      ),
-                                    )
+                                    // const Text(
+                                    //   'View Details',
+                                    //   style: TextStyle(
+                                    //     color: kPrimaryColor,
+                                    //     fontWeight: FontWeight.bold,
+                                    //     decoration: TextDecoration.underline,
+                                    //     decorationColor: kPrimaryColor,
+                                    //   ),
+                                    // ),
                                   ],
                                 )
                               ],
