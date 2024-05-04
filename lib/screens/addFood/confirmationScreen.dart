@@ -111,13 +111,18 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RichText(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               text: TextSpan(
                                 children: [
                                   const TextSpan(
-                                      text: 'Name: ', style: kTextStyleB),
+                                    text: 'Name: ',
+                                    style: kTextStyleB,
+                                  ),
                                   TextSpan(
-                                      text: widget.firstName,
-                                      style: kTextStyleN),
+                                    text: widget.firstName,
+                                    style: kTextStyleN,
+                                  ),
                                 ],
                               ),
                             ),
@@ -244,8 +249,8 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
     var data = {
       'to': token,
       'notification': {
-        'title': widget.firstName,
-        'body': widget.address,
+        'title': '${widget.firstName} wants to donate their leftover food',
+        'body': 'Address : ${widget.address}',
         // "sound": "jetsons_doorbell.mp3"
       },
       'android': {
