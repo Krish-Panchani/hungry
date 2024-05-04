@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hunger/components/HelpCenter.dart';
+import 'package:hunger/pages/HelpCenter.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/pages/AboutUs.dart';
 import 'package:hunger/pages/ContactUs.dart';

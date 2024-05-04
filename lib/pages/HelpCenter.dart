@@ -26,7 +26,7 @@ class HelpCenterScreen extends StatelessWidget {
             SizedBox(height: 10),
             CustomElevatedButton(onPressed: () {}, text: 'Contact Support'),
             SizedBox(height: 10),
-            CustomElevatedButton(onPressed: () {}, text: 'Lice Chat'),
+            CustomElevatedButton(onPressed: () {}, text: 'Live Chat'),
             SizedBox(height: 10),
             CustomElevatedButton(onPressed: () {}, text: 'Report a Problem'),
             SizedBox(height: 10),
