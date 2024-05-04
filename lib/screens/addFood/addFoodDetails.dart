@@ -24,7 +24,7 @@ class _AddFoodDetailsState extends State<AddFoodDetails> {
           child: Column(
             children: [
               Text(
-                "Submit Remaining Food",
+                "Submit Leftover Food",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 24,

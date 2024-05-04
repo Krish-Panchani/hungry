@@ -89,7 +89,7 @@ class _InitScreenState extends State<InitScreen> {
                   const SizedBox(height: 16),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text('You have Remaining Food?'),
+                    child: Text('You have Leftover Food?'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -126,7 +126,7 @@ class _InitScreenState extends State<InitScreen> {
                       minimumSize: const Size(double.infinity, 0), // Full width
                     ),
                     child: const Text(
-                      'Submit Remaining Food',
+                      'Submit Leftover Food',
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
