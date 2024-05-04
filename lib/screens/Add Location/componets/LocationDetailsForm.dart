@@ -37,6 +37,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
   String? phoneNumber;
   String? address;
   String? details;
+  List<String> selectedCategories = [];
 
   bool _isLoading = false;
 
@@ -155,8 +156,62 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
               return null;
             },
           ),
+          const SizedBox(height: 20),
+          // Checkboxes for categories
+          CheckboxListTile(
+            title: const Text('Temples'),
+            value: selectedCategories.contains('Temples'),
+            onChanged: (bool? value) {
+              setState(() {
+                if (value != null && value) {
+                  selectedCategories.add('Temples');
+                } else {
+                  selectedCategories.remove('Temples');
+                }
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('Food Banks'),
+            value: selectedCategories.contains('Food Banks'),
+            onChanged: (bool? value) {
+              setState(() {
+                if (value != null && value) {
+                  selectedCategories.add('Food Banks');
+                } else {
+                  selectedCategories.remove('Food Banks');
+                }
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('NGO'),
+            value: selectedCategories.contains('NGO'),
+            onChanged: (bool? value) {
+              setState(() {
+                if (value != null && value) {
+                  selectedCategories.add('NGO');
+                } else {
+                  selectedCategories.remove('NGO');
+                }
+              });
+            },
+          ),
+          CheckboxListTile(
+            title: const Text('Gov. Food Center'),
+            value: selectedCategories.contains('Gov. Food Center'),
+            onChanged: (bool? value) {
+              setState(() {
+                if (value != null && value) {
+                  selectedCategories.add('Gov. Food Center');
+                } else {
+                  selectedCategories.remove('Gov. Food Center');
+                }
+              });
+            },
+          ),
           FormError(errors: errors),
-          const SizedBox(height: 50),
+          const SizedBox(height: 20),
           CustomElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
@@ -245,6 +300,7 @@ class _AddLocationDetailsFormState extends State<AddLocationDetailsForm> {
         "details": details,
         "location": selectedLocationString,
         "status": "pending",
+        "categories": selectedCategories,
       });
 
       log("User data saved to Realtime Database");
