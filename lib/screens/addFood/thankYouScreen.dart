@@ -100,6 +100,8 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RichText(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               text: TextSpan(
                                 children: [
                                   const TextSpan(
