@@ -47,12 +47,9 @@ class _InitScreenState extends State<InitScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AddressBox(
-            initialAddress: _currentAddress,
-          ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 25),
           Padding(
-            padding: const EdgeInsets.only(left: 30),
+            padding: const EdgeInsets.only(left: 25),
             child: RichText(
               text: TextSpan(
                 children: [
@@ -77,13 +74,17 @@ class _InitScreenState extends State<InitScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 25),
+          AddressBox(
+            initialAddress: _currentAddress,
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 50),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text('Are You Hungry?'),
