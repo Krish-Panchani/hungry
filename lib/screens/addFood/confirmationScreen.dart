@@ -112,7 +112,7 @@ class _FoodConfirmationDetailsState extends State<FoodConfirmationDetails> {
                           children: [
                             RichText(
                               maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.clip,
                               text: TextSpan(
                                 children: [
                                   const TextSpan(
