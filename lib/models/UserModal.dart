@@ -5,6 +5,7 @@ class UserData {
   final String location;
   final String phone;
   final String status;
+  final String? category;
 
   UserData({
     required this.fname,
@@ -13,6 +14,7 @@ class UserData {
     required this.location,
     required this.phone,
     required this.status,
+    required this.category,
   });
 
   factory UserData.fromJson(Map<dynamic, dynamic> json) {
@@ -23,6 +25,7 @@ class UserData {
       location: json['location'] ?? '',
       phone: json['phone'] ?? '',
       status: json['status'] ?? '',
+      category: json['category'] ?? '',
     );
   }
 }
