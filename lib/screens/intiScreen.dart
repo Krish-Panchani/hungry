@@ -37,6 +37,7 @@ class _InitScreenState extends State<InitScreen> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const MyAppBar(),
@@ -44,17 +45,45 @@ class _InitScreenState extends State<InitScreen> {
         showLogOut: true,
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AddressBox(
             initialAddress: _currentAddress,
+          ),
+          const SizedBox(height: 50),
+          Padding(
+            padding: const EdgeInsets.only(left: 30),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Welcome Back, ',
+                    style: TextStyle(
+                      color:
+                          kPrimaryColor, // Change the color for "Welcome Back"
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  TextSpan(
+                    text: user != null ? user.displayName ?? 'User' : 'Guest',
+                    style: const TextStyle(
+                      color: Colors.grey, // Keep the color for the username
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 40),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text('Are You Hungry?'),
