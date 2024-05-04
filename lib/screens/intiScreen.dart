@@ -78,13 +78,13 @@ class _InitScreenState extends State<InitScreen> {
           AddressBox(
             initialAddress: _currentAddress,
           ),
+          const SizedBox(height: 40),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text('Are You Hungry?'),
