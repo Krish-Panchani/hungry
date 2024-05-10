@@ -78,7 +78,7 @@ class _InitScreenState extends State<InitScreen> {
           AddressBox(
             initialAddress: _currentAddress,
           ),
-          const SizedBox(height: 40),
+          // const SizedBox(height: 25),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
